@@ -1,29 +1,82 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <el-container class="app-container">
+      <header-component :user="user"/>
+      <el-container>
+        <transition name="el-fade-in-linear">
+          <aside-component 
+            v-if="user" 
+            mode="in-out"/>
+        </transition>
+        <el-main>
+          <router-view/>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
+<script>
+import firebase from 'firebase/app';
+import HeaderComponent from '@/components/HeaderComponent.vue';
+import AsideComponent from '@/components/AsideComponent.vue';
+
+export default {
+  name: 'App',
+  components: {
+    HeaderComponent,
+    AsideComponent,
+  },
+  data() {
+    return {
+      user: null,
+    };
+  },
+  created() {
+    firebase.auth().onAuthStateChanged(user => {
+      this.user = user;
+      if (user) {
+        this.$router.push({ path: '/' });
+      } else {
+        this.$router.push({ path: '/auth' });
+      }
+    });
+  },
+};
+</script>
+
+
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  margin: 0;
+  padding: 0;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.el-header {
+  background-color: #b3c0d1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.logo-icon {
+  vertical-align: middle;
 }
 </style>

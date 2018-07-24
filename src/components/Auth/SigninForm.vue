@@ -1,0 +1,76 @@
+<template>
+  <el-form 
+    ref="signinForm" 
+    :model="signinForm" 
+    :rules="rules"
+    status-icon >
+    <el-form-item 
+      label="Email" 
+      prop="email">
+      <el-input 
+        v-model="signinForm.email" 
+        type="email"/>
+    </el-form-item>
+    <el-form-item 
+      label="Пароль" 
+      prop="password">
+      <el-input 
+        v-model="signinForm.password" 
+        type="password"/>
+    </el-form-item>
+    <el-button 
+      type="primary" 
+      plain 
+      class="submit"
+      @click="validateForm" 
+    >Вход</el-button>
+  </el-form> 
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      signinForm: {
+        email: '',
+        password: '',
+      },
+      rules: {
+        email: [
+          {
+            required: true,
+            type: 'email',
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
+      },
+    };
+  },
+  methods: {
+    validateForm() {
+      this.$refs.signinForm.validate(valid => {
+        if (valid) {
+          this.$emit('signin', this.signinForm);
+          this.$refs.signinForm.resetFields();
+        }
+      });
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.submit {
+  display: block;
+  width: 150px;
+  margin: 0 auto;
+}
+</style>
+
+
