@@ -23,17 +23,6 @@ const api = {
       throw e;
     }
   },
-  async signup(email, password) {
-    try {
-      const user = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-
-      return user;
-    } catch (e) {
-      throw e;
-    }
-  },
   async signout() {
     try {
       await firebase.auth().signOut();

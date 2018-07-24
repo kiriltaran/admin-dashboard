@@ -7,7 +7,7 @@
         href="/" 
         class="logo">
         <img 
-          src="http://via.placeholder.com/100x50" 
+          src="https://via.placeholder.com/100x50" 
           class="logo-icon">
       </a>
       <div 
