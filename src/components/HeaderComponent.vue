@@ -13,10 +13,7 @@
       <div 
         v-if="user" 
         class="user">
-        <div class="user-title">
-          <i class="el-icon-service"/>
-          {{ user.email }}
-        </div>
+        <div class="user-title">{{ user.email }}</div>
         <el-dropdown 
           trigger="click" 
           @command="handleCommand">
@@ -32,7 +29,6 @@
 
 <script>
 import api from '@/api';
-import firebase from 'firebase/app';
 
 export default {
   props: {
@@ -57,8 +53,6 @@ export default {
     async signout() {
       try {
         await api.signout();
-        const user = await firebase.auth().currentUser;
-        console.log(user);
       } catch (e) {
         window.console.log(e);
       }
@@ -74,7 +68,7 @@ export default {
   min-width: 180px;
 
   &-title {
-    font-size: 18px;
+    font-size: 14px;
   }
 }
 

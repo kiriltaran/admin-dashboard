@@ -1,46 +1,43 @@
 <template>
-  <div id="app">
-    <el-container class="app-container">
-      <header-component :user="user"/>
-      <el-container>
-        <transition name="el-fade-in-linear">
-          <aside-component 
-            v-if="user" 
-            mode="in-out"/>
-        </transition>
-        <el-main>
-          <router-view/>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div id="app" >
+    <header-component :user="user"/>
+    <el-main class="main">
+      <transition name="el-fade-in-linear">
+        <router-view/>
+      </transition>
+    </el-main>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase/app';
 import HeaderComponent from '@/components/HeaderComponent.vue';
-import AsideComponent from '@/components/AsideComponent.vue';
 
 export default {
   name: 'App',
   components: {
     HeaderComponent,
-    AsideComponent,
   },
   data() {
     return {
       user: null,
+      containerHeight: 0,
     };
   },
   created() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.user = user;
-      if (user) {
-        this.$router.push({ path: '/' });
-      } else {
-        this.$router.push({ path: '/auth' });
-      }
-    });
+    this.observeAuth();
+  },
+  methods: {
+    observeAuth() {
+      firebase.auth().onAuthStateChanged(user => {
+        this.user = user;
+        if (user) {
+          this.$router.push({ path: '/' });
+        } else {
+          this.$router.push({ path: '/auth' });
+        }
+      });
+    },
   },
 };
 </script>
@@ -52,23 +49,21 @@ export default {
   padding: 0;
 }
 
-body {
-  height: 100vh;
-  overflow: hidden;
-  font-family: 'Open Sans', sans-serif;
+::-webkit-scrollbar-thumb {
+  background: #409eff;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
 }
 
 #app {
-  height: 100%;
   display: flex;
+  height: 100vh;
+  font-family: 'Open Sans', sans-serif;
   flex-direction: column;
 }
-
-.app-container {
-  flex-grow: 1;
-  flex-direction: column;
-}
-
 .el-header {
   background-color: #b3c0d1;
   color: #333;
@@ -78,5 +73,9 @@ body {
 
 .logo-icon {
   vertical-align: middle;
+}
+
+.main {
+  display: flex;
 }
 </style>

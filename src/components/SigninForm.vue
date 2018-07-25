@@ -9,20 +9,22 @@
       prop="email">
       <el-input 
         v-model="signinForm.email" 
-        type="email"/>
+        type="email"
+        @keyup.native.enter="validateForm"/>
     </el-form-item>
     <el-form-item 
       label="Пароль" 
       prop="password">
       <el-input 
         v-model="signinForm.password" 
-        type="password"/>
+        type="password"
+        @keyup.native.enter="validateForm"/>
     </el-form-item>
     <el-button 
       type="primary" 
       plain 
       class="submit"
-      @click="validateForm" 
+      @click="validateForm"
     >Вход</el-button>
   </el-form> 
 </template>

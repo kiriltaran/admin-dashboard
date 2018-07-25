@@ -7,7 +7,7 @@ const api = {
       const { data } = await axios.get(
         'https://jsonplaceholder.typicode.com/users',
       );
-      return data;
+      return [...data, ...data, ...data];
     } catch (e) {
       throw e;
     }

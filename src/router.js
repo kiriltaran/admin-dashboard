@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import AuthPage from '@/components/Auth/AuthPage.vue';
-import MainPage from '@/components/MainPage.vue';
+import AuthPage from '@/views/AuthPage.vue';
+import DashboardPage from '@/views/DashboardPage.vue';
 
 Vue.use(Router);
 
@@ -11,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
-      component: MainPage,
+      name: 'dashboard',
+      component: DashboardPage,
     },
     {
       path: '/auth',

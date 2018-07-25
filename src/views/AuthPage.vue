@@ -15,7 +15,7 @@
 
 <script>
 import api from '@/api';
-import SigninForm from '@/components/Auth/SigninForm.vue';
+import SigninForm from '@/components/SigninForm.vue';
 
 export default {
   components: {
@@ -43,9 +43,9 @@ export default {
 
 <style lang="scss" scoped>
 .auth {
-  height: 100%;
   display: flex;
   justify-content: center;
+  flex-grow: 1;
   &-panel {
     align-self: center;
     width: 400px;
