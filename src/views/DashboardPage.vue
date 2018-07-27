@@ -2,13 +2,15 @@
   <div class="dashboard">
     <div class="col-1 col">
       <companies-list 
-        @new-company="onNewCompany" 
+        :companies="companies"
+        @click-new="onClickNewCompany" 
         @select-company="onSelectCompany"/>
     </div>
     <div class="col-2 col">
       <company-column 
         v-if="isShowingCompanyColumn" 
-        :company-id="companyId" />
+        :company-id="companyId"
+        @new-company="onNewCompany" />
     </div>
     <div class="col-3 col">
       <!-- <vacancy-info/> -->
@@ -17,6 +19,7 @@
 </template>
 
 <script>
+import api from '@/api';
 import CompaniesList from '@/components/Company/CompaniesList.vue';
 import CompanyColumn from '@/components/Company/CompanyColumn.vue';
 
@@ -27,6 +30,7 @@ export default {
   },
   data() {
     return {
+      companies: [],
       companyId: null,
       vacancyId: null,
     };
@@ -36,12 +40,25 @@ export default {
       return this.companyId !== null;
     },
   },
+  mounted() {
+    this.loadCompanies();
+  },
   methods: {
-    onNewCompany() {
+    async loadCompanies() {
+      try {
+        this.companies = await api.fetchCompanies();
+      } catch (e) {
+        window.console.log(e);
+      }
+    },
+    onClickNewCompany() {
       this.companyId = '';
     },
     onSelectCompany(companyId) {
       this.companyId = companyId;
+    },
+    onNewCompany() {
+      this.loadCompanies();
     },
   },
 };

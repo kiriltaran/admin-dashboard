@@ -3,7 +3,8 @@
     v-loading="loading" 
     class="company-column">
     <company-form
-      v-if="isShowingForm" 
+      v-if="isShowingForm"
+      :form-data="companyId ? company : null"
       @save="onSaveForm"/>
     <template v-if="isShowingInfo">
       <company-info
@@ -57,7 +58,6 @@ export default {
   data() {
     return {
       vacanciesHeight: 0,
-      isEditing: false,
       company: null,
       loading: false,
       isShowingInfo: false,
@@ -89,14 +89,16 @@ export default {
       }
     },
     onEdit() {
-      this.isEditing = true;
+      this.showForm();
     },
     async onSaveForm(data) {
       try {
         if (this.companyId === '') {
           await api.createCompany(data);
+          this.$emit('new-company');
         } else {
-          await api.updateCompany(data);
+          await api.updateCompany(this.companyId, data);
+          this.showInfo();
         }
       } catch (e) {
         window.console.log(e);
@@ -115,10 +117,12 @@ export default {
     async showInfo() {
       await this.loadCompany(this.companyId);
       this.isShowingInfo = true;
+      this.isShowingForm = false;
       await this.calculateVacanciesHeight();
     },
     showForm() {
       this.isShowingInfo = false;
+      this.isShowingForm = true;
     },
   },
 };
