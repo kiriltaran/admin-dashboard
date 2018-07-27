@@ -1,17 +1,32 @@
 import Vue from 'vue';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/storage';
 import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/ru-RU';
+import wysiwyg from 'vue-wysiwyg';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'vue-wysiwyg/dist/vueWysiwyg.css';
 
 import App from './App.vue';
 import router from './router';
 
 Vue.use(ElementUI, { locale });
+Vue.use(wysiwyg, {
+  hideModules: {
+    code: true,
+    image: true,
+    table: true,
+    separator: true,
+    justifyLeft: true,
+    justifyCenter: true,
+    justifyRight: true,
+  },
+});
 
 Vue.config.productionTip = false;
-// need replace to config file
+
 const config = {
   apiKey: process.env.VUE_APP_API_KEY,
   authDomain: process.env.VUE_APP_AUTH_DOMAIN,

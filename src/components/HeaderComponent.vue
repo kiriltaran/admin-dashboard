@@ -13,7 +13,7 @@
       <div 
         v-if="user" 
         class="user">
-        <div class="user-title">{{ user.email }}</div>
+        <div class="user-email">{{ user.email }}</div>
         <el-dropdown 
           trigger="click" 
           @command="handleCommand">
@@ -62,6 +62,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-header {
+  background-color: #b3c0d1;
+  line-height: 60px;
+}
+
+.logo-icon {
+  vertical-align: middle;
+}
+
 .user {
   display: flex;
   justify-content: space-between;
