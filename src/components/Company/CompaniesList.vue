@@ -23,6 +23,7 @@
       <li 
         v-for="(company, id) in companies" 
         :key="id"
+        :class="activeId === id ? 'active' : ''"
         class="list-item"
         @click="onClickCompany(id)">
         {{ company.name }}
@@ -32,32 +33,26 @@
 </template>
 
 <script>
-import api from '@/api';
-
 export default {
+  props: {
+    companies: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       search: '',
-      companies: [],
       listHeight: 0,
-      loading: false,
+      activeId: '',
     };
   },
   mounted() {
     this.initListHeight();
-    this.loadCompanies();
   },
   methods: {
-    async loadCompanies() {
-      try {
-        this.loading = true;
-        this.companies = await api.fetchCompanies();
-      } catch (e) {
-        window.console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
     initListHeight() {
       const headHeight = document.getElementsByClassName('companies-head')[0]
         .clientHeight;
@@ -66,10 +61,11 @@ export default {
       this.listHeight = mainHeight - headHeight;
     },
     onClickNew() {
-      this.$emit('new-company');
+      this.$emit('click-new');
     },
-    onClickCompany(data) {
-      this.$emit('select-company', data);
+    onClickCompany(id) {
+      this.activeId = id;
+      this.$emit('select-company', id);
     },
   },
 };
@@ -99,9 +95,20 @@ export default {
   height: 40px;
   line-height: 40px;
   font-size: 18px;
+  padding: 0 20px;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
   &:hover {
     cursor: pointer;
     background-color: #eee;
+  }
+}
+
+.active {
+  color: #fff;
+  background-color: #409eff;
+  &:hover {
+    background-color: #66b1ff;
   }
 }
 </style>

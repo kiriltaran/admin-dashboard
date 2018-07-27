@@ -28,6 +28,16 @@ const api = {
       throw e;
     }
   },
+  async updateCompany(id, data) {
+    try {
+      await firebase
+        .database()
+        .ref(`companies/${id}`)
+        .update(data);
+    } catch (e) {
+      throw e;
+    }
+  },
   async signin(email, password) {
     try {
       const user = await firebase
