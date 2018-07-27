@@ -1,13 +1,29 @@
-import axios from 'axios';
+// import axios from 'axios';
 import firebase from 'firebase/app';
 
 const api = {
-  async loadCompanies() {
+  async fetchCompanies() {
+    const companies = await firebase
+      .database()
+      .ref('companies')
+      .once('value');
+
+    return companies.val();
+  },
+  async fetchCompanyById(id) {
+    const company = await firebase
+      .database()
+      .ref(`companies/${id}`)
+      .once('value');
+
+    return company.val();
+  },
+  async createCompany(data) {
     try {
-      const { data } = await axios.get(
-        'https://jsonplaceholder.typicode.com/users',
-      );
-      return [...data, ...data, ...data];
+      await firebase
+        .database()
+        .ref('companies')
+        .push(data);
     } catch (e) {
       throw e;
     }

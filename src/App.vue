@@ -2,7 +2,9 @@
   <div id="app" >
     <header-component :user="user"/>
     <el-main class="main">
-      <transition name="el-fade-in-linear">
+      <transition 
+        name="el-fade-in-linear" 
+        mode="out-in">
         <router-view/>
       </transition>
     </el-main>
@@ -58,24 +60,32 @@ export default {
   width: 6px;
 }
 
+body {
+  font-size: 16px;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
 #app {
   display: flex;
   height: 100vh;
-  font-family: 'Open Sans', sans-serif;
-  flex-direction: column;
-}
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
 
-.logo-icon {
-  vertical-align: middle;
+  flex-direction: column;
 }
 
 .main {
   display: flex;
+}
+
+.label {
+  font-size: 14px;
+  color: #606266;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
 }
 </style>

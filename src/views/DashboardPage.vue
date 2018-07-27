@@ -1,25 +1,48 @@
 <template>
   <div class="dashboard">
     <div class="col-1 col">
-      <companies-list/>
+      <companies-list 
+        @new-company="onNewCompany" 
+        @select-company="onSelectCompany"/>
     </div>
     <div class="col-2 col">
-      <company-component/>
+      <company-column 
+        v-if="isShowingCompanyColumn" 
+        :company-id="companyId" />
     </div>
     <div class="col-3 col">
-      <company-component/>
+      <!-- <vacancy-info/> -->
     </div>   
   </div>
 </template>
 
 <script>
 import CompaniesList from '@/components/Company/CompaniesList.vue';
-import CompanyComponent from '@/components/Company/CompanyComponent.vue';
+import CompanyColumn from '@/components/Company/CompanyColumn.vue';
 
 export default {
   components: {
     CompaniesList,
-    CompanyComponent,
+    CompanyColumn,
+  },
+  data() {
+    return {
+      companyId: null,
+      vacancyId: null,
+    };
+  },
+  computed: {
+    isShowingCompanyColumn() {
+      return this.companyId !== null;
+    },
+  },
+  methods: {
+    onNewCompany() {
+      this.companyId = '';
+    },
+    onSelectCompany(companyId) {
+      this.companyId = companyId;
+    },
   },
 };
 </script>
@@ -31,24 +54,24 @@ export default {
 }
 .col {
   border-right: 2px solid #eee;
+  padding: 0 20px;
+  &:first-child {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
   &:last-child {
     border-right: none;
   }
 }
 
 .col-1 {
-  padding: 0 5px;
-  flex-grow: 1;
+  min-width: 250px;
+  max-width: 300px;
 }
 
 .col-2 {
-  padding: 0 5px;
-  flex-grow: 6;
-}
-
-.col-3 {
-  padding: 0 5px;
-  flex-grow: 6;
+  min-width: 400px;
+  max-width: 500px;
 }
 </style>
 

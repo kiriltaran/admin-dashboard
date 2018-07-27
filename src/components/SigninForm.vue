@@ -24,7 +24,7 @@
       type="primary" 
       plain 
       class="submit"
-      @click="validateForm"
+      @click="onClickSubmit"
     >Вход</el-button>
   </el-form> 
 </template>
@@ -55,7 +55,7 @@ export default {
     };
   },
   methods: {
-    validateForm() {
+    onClickSubmit() {
       this.$refs.signinForm.validate(valid => {
         if (valid) {
           this.$emit('signin', this.signinForm);

@@ -1,25 +1,31 @@
 <template>
-  <div class="companies">
+  <div 
+    v-loading="loading" 
+    class="companies">
     <div class="companies-head">
       <el-row 
         type="flex" 
         justify="space-between">
-        <span class="title">Компании</span>
-        <el-button type="primary">Добавить</el-button>
+        <span class="head-title">Компании</span>
+        <el-button 
+          type="primary" 
+          size="mini"
+          @click="onClickNew">Добавить</el-button>
       </el-row>
       <el-input 
         v-model="search"
         class="search" 
-        placeholder="Введите название компании или ИНН"/>
+        placeholder="Введите название или ИНН"/>
     </div>
     <ul 
       :style="{height: listHeight + 'px'}"
       class="companies-list">
       <li 
-        v-for="company in companies" 
-        :key="company.id"
-        class="list-item">
-        {{ company.username }}
+        v-for="(company, id) in companies" 
+        :key="id"
+        class="list-item"
+        @click="onClickCompany(id)">
+        {{ company.name }}
       </li>
     </ul>
   </div>
@@ -34,23 +40,36 @@ export default {
       search: '',
       companies: [],
       listHeight: 0,
+      loading: false,
     };
   },
   mounted() {
-    const headHeight = document.getElementsByClassName('companies-head')[0]
-      .clientHeight;
-    const mainHeight =
-      document.getElementsByClassName('main')[0].clientHeight - 40;
-    this.listHeight = mainHeight - headHeight;
+    this.initListHeight();
     this.loadCompanies();
   },
   methods: {
     async loadCompanies() {
       try {
-        this.companies = await api.loadCompanies();
+        this.loading = true;
+        this.companies = await api.fetchCompanies();
       } catch (e) {
         window.console.log(e);
+      } finally {
+        this.loading = false;
       }
+    },
+    initListHeight() {
+      const headHeight = document.getElementsByClassName('companies-head')[0]
+        .clientHeight;
+      const mainHeight =
+        document.getElementsByClassName('main')[0].clientHeight - 40;
+      this.listHeight = mainHeight - headHeight;
+    },
+    onClickNew() {
+      this.$emit('new-company');
+    },
+    onClickCompany(data) {
+      this.$emit('select-company', data);
     },
   },
 };
@@ -60,8 +79,9 @@ export default {
 .companies {
   &-head {
     margin-bottom: 10px;
-    .title {
+    .head-title {
       align-self: center;
+      font-size: 20px;
     }
 
     .search {
@@ -77,6 +97,12 @@ export default {
 .list-item {
   display: block;
   height: 40px;
+  line-height: 40px;
+  font-size: 18px;
+  &:hover {
+    cursor: pointer;
+    background-color: #eee;
+  }
 }
 </style>
 
