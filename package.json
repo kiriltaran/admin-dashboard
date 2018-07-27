@@ -5,7 +5,6 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "deploy": "npx firebase deploy --token $FIREBASE_TOKEN",
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix"
   },
@@ -22,7 +21,6 @@
     "@vue/cli-service": "^3.0.0-rc.5",
     "@vue/eslint-config-airbnb": "^3.0.0-rc.5",
     "eslint-config-prettier": "^2.9.0",
-    "firebase-tools": "^4.0.0",
     "lint-staged": "^7.2.0",
     "node-sass": "^4.9.0",
     "prettier": "^1.13.7",
