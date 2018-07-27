@@ -1,0 +1,27 @@
+image: node:10.7.0-alpine
+
+stages:
+- build
+- deploy
+
+build:
+  stage: build
+  script:
+  - npm ci
+  - npm run build
+  artifacts:
+    expire_in: 1 week
+    paths:
+    - dist
+  only:
+  - master
+
+deploy:
+  stage: deploy
+  script:
+  - npm run deploy
+  environment:
+    name: stage
+    url: https://drub-1b838.firebaseapp.com/
+  only:
+  - master
