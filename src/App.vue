@@ -23,7 +23,6 @@ export default {
   data() {
     return {
       user: null,
-      containerHeight: 0,
     };
   },
   created() {

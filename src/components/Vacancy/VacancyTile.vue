@@ -5,7 +5,7 @@
     @click.native="onClick">
     <div class="tile-header mb-10">
       <div class="options label">D,  ADR,  Киев + 200 км</div>
-      <div class="time label">3 дня</div>
+      <div class="time label"><i class="el-icon-time"/> 3 дня</div>
     </div>
     <div class="salary mb-10">23 152 руб</div>
     <div class="title mb-10">Название вакансии длинное в две стороки, водитель-дальнобойщик</div>
