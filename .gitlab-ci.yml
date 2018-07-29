@@ -22,7 +22,7 @@ deploy:
   - firebase use --token $FIREBASE_TOKEN default
   - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --only hosting --non-interactive --token $FIREBASE_TOKEN
   - npm install -g @sentry/cli --unsafe-perm
-  - sh scripts/sentry_stage.sh
+  - sh scripts/sentry.sh
   environment:
     name: stage
     url: https://drub-1b838.firebaseapp.com/
