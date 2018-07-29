@@ -1,0 +1,3 @@
+#!/bin/sh
+
+export VUE_APP_RELEASE_VERSION="$CI_COMMIT_SHA"
