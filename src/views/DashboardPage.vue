@@ -38,8 +38,8 @@ export default {
   },
   data() {
     return {
-      companies: [],
-      vacancies: [],
+      companies: {},
+      vacancies: {},
       companyId: null,
       vacancyId: null,
     };
