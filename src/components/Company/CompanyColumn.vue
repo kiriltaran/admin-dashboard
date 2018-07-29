@@ -120,7 +120,7 @@ export default {
       await this.loadCompany(this.companyId);
       this.isShowingInfo = true;
       this.isShowingForm = false;
-      await this.calculateVacanciesHeight();
+      this.$nextTick(() => this.calculateVacanciesHeight());
     },
     showForm() {
       this.isShowingInfo = false;
