@@ -2,6 +2,7 @@
 import firebase from 'firebase/app';
 
 const api = {
+  // COMPANY
   async fetchCompanies() {
     const companies = await firebase
       .database()
@@ -10,7 +11,7 @@ const api = {
 
     return companies.val();
   },
-  async fetchCompanyById(id) {
+  async fetchCompany(id) {
     const company = await firebase
       .database()
       .ref(`companies/${id}`)
@@ -38,6 +39,50 @@ const api = {
       throw e;
     }
   },
+  // VACANCY
+  async fetchVacancies(companyId) {
+    const vacancies = await firebase
+      .database()
+      .ref('vacancies')
+      .orderByChild('companyId')
+      .equalTo(companyId)
+      .once('value');
+
+    return vacancies.val();
+  },
+  async fetchVacancy(id) {
+    const vacancy = await firebase
+      .database()
+      .ref(`vacancies/${id}`)
+      .once('value');
+
+    return vacancy.val();
+  },
+  async createVacancy(companyId, data) {
+    try {
+      await firebase
+        .database()
+        .ref('vacancies')
+        .push({
+          ...data,
+          companyId,
+          createdTime: firebase.database.ServerValue.TIMESTAMP,
+        });
+    } catch (e) {
+      throw e;
+    }
+  },
+  async updateVacancy(id, data) {
+    try {
+      await firebase
+        .database()
+        .ref(`vacancies/${id}`)
+        .update(data);
+    } catch (e) {
+      throw e;
+    }
+  },
+  // AUTH
   async signin(email, password) {
     try {
       const user = await firebase

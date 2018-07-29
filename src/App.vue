@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import Raven from 'raven-js';
 import firebase from 'firebase/app';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 
@@ -23,7 +24,6 @@ export default {
   data() {
     return {
       user: null,
-      containerHeight: 0,
     };
   },
   created() {
@@ -34,6 +34,10 @@ export default {
       firebase.auth().onAuthStateChanged(user => {
         this.user = user;
         if (user) {
+          Raven.setUserContext({
+            id: user.uid,
+            email: user.email,
+          });
           this.$router.push({ path: '/' });
         } else {
           this.$router.push({ path: '/auth' });

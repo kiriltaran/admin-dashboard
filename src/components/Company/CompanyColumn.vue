@@ -1,7 +1,5 @@
 <template>
-  <div 
-    v-loading="loading" 
-    class="company-column">
+  <div class="company-column">
     <company-form
       v-if="isShowingForm"
       :form-data="companyId ? company : null"
@@ -19,7 +17,9 @@
             <div class="title">Вакансии</div>
             <el-button 
               type="primary" 
-              size="mini">Добавить</el-button>
+              size="mini"
+              @click="onClickNew"
+            >Добавить</el-button>
           </el-row>
         </div>
         <div 
@@ -54,12 +54,17 @@ export default {
         return null;
       },
     },
+    vacancies: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
       vacanciesHeight: 0,
       company: null,
-      loading: false,
       isShowingInfo: false,
       isShowingForm: false,
     };
@@ -106,23 +111,23 @@ export default {
     },
     async loadCompany(companyId) {
       try {
-        this.loading = true;
-        this.company = await api.fetchCompanyById(companyId);
+        this.company = await api.fetchCompany(companyId);
       } catch (e) {
         window.console.log(e);
-      } finally {
-        this.loading = false;
       }
     },
     async showInfo() {
       await this.loadCompany(this.companyId);
       this.isShowingInfo = true;
       this.isShowingForm = false;
-      await this.calculateVacanciesHeight();
+      this.$nextTick(() => this.calculateVacanciesHeight());
     },
     showForm() {
       this.isShowingInfo = false;
       this.isShowingForm = true;
+    },
+    onClickNew() {
+      this.$emit('click-new');
     },
   },
 };

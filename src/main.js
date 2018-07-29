@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import Raven from 'raven-js';
+import RavenVue from 'raven-js/plugins/vue';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
@@ -11,6 +13,16 @@ import 'vue-wysiwyg/dist/vueWysiwyg.css';
 
 import App from './App.vue';
 import router from './router';
+
+if (process.env.NODE_ENV === 'production') {
+  Raven.config(process.env.VUE_APP_SENTRY_DSN, {
+    release: process.env.VUE_APP_RELEASE_VERSION,
+    environment:
+      process.env.VUE_APP_SENTRY_ENV === 'stage' ? 'stage' : 'production',
+  })
+    .addPlugin(RavenVue, Vue)
+    .install();
+}
 
 Vue.use(ElementUI, { locale });
 Vue.use(wysiwyg, {

@@ -1,7 +1,5 @@
 <template>
-  <div 
-    v-loading="loading" 
-    class="companies">
+  <div class="companies">
     <div class="companies-head">
       <el-row 
         type="flex" 

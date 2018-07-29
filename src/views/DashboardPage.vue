@@ -10,10 +10,16 @@
       <company-column 
         v-if="isShowingCompanyColumn" 
         :company-id="companyId"
+        :vacancies="vacancies"
+        @click-new="onClickNewVacancy"
         @new-company="onNewCompany" />
     </div>
     <div class="col-3 col">
-      <!-- <vacancy-info/> -->
+      <vacancy-column
+        v-if="isShowingVacancyColumn" 
+        :company-id="companyId"
+        :vacancy-id="vacancyId"
+        @new-vacancy="onNewVacancy"/>
     </div>   
   </div>
 </template>
@@ -22,15 +28,18 @@
 import api from '@/api';
 import CompaniesList from '@/components/Company/CompaniesList.vue';
 import CompanyColumn from '@/components/Company/CompanyColumn.vue';
+import VacancyColumn from '@/components/Vacancy/VacancyColumn.vue';
 
 export default {
   components: {
     CompaniesList,
     CompanyColumn,
+    VacancyColumn,
   },
   data() {
     return {
-      companies: [],
+      companies: {},
+      vacancies: {},
       companyId: null,
       vacancyId: null,
     };
@@ -38,6 +47,9 @@ export default {
   computed: {
     isShowingCompanyColumn() {
       return this.companyId !== null;
+    },
+    isShowingVacancyColumn() {
+      return this.vacancyId !== null;
     },
   },
   mounted() {
@@ -51,14 +63,27 @@ export default {
         window.console.log(e);
       }
     },
+    async loadVacancies() {
+      try {
+        this.vacancies = await api.fetchVacancies(this.companyId);
+      } catch (e) {
+        window.console.log(e);
+      }
+    },
     onClickNewCompany() {
       this.companyId = '';
+    },
+    onClickNewVacancy() {
+      this.vacancyId = '';
     },
     onSelectCompany(companyId) {
       this.companyId = companyId;
     },
     onNewCompany() {
       this.loadCompanies();
+    },
+    onNewVacancy() {
+      this.loadVacancies();
     },
   },
 };
