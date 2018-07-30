@@ -49,7 +49,7 @@
       v-html="company.description"/>
     <el-button 
       type="text" 
-      @click="onToggleExpand">
+      @click="onToggleDescription">
       {{ isFullDesc ? 'Свернуть' : 'Развернуть' }}
     <i :class="isFullDesc ?'el-icon-arrow-up' : 'el-icon-arrow-down' "/></el-button>
   </div>
@@ -74,7 +74,7 @@ export default {
     onClickEdit() {
       this.$emit('edit');
     },
-    onToggleExpand() {
+    onToggleDescription() {
       this.isFullDesc = !this.isFullDesc;
     },
   },

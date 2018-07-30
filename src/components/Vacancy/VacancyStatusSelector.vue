@@ -1,6 +1,6 @@
 <template>
   <el-select
-    v-model="value"
+    :value="value"
     size="mini"
     class="status-selector"
     @change="onChange">

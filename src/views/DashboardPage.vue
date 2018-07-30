@@ -14,14 +14,16 @@
         :vacancy-id="vacancyId"
         :vacancies="vacancies"
         @click-new="onClickNewVacancy"
-        @submit="onSubmitCompany" />
+        @submit="onSubmitCompany"
+        @select-vacancy="onSelectVacancy"
+        @change-status="onChangeStatus" />
     </div>
     <div class="col-3 col">
       <vacancy-column
         v-if="isShowingVacancyColumn" 
         :company-id="companyId"
         :vacancy-id="vacancyId"
-        @new-vacancy="onNewVacancy"/>
+        @submit="onSubmitVacancy"/>
     </div>   
   </div>
 </template>
@@ -98,8 +100,25 @@ export default {
         window.console.log(e);
       }
     },
-    onNewVacancy() {
-      this.loadVacancies();
+    async onSubmitVacancy(data) {
+      try {
+        if (this.vacancyId === '') {
+          await api.createVacancy(data);
+          await this.loadVacancies();
+          this.vacancyId = Object.keys(this.vacancies).pop();
+        } else {
+          await api.updateVacancy(this.vacancyId, data);
+          await this.loadVacancies();
+        }
+      } catch (e) {
+        window.console.log(e);
+      }
+    },
+    onSelectVacancy(id) {
+      this.vacancyId = id;
+    },
+    async onChangeStatus(status) {
+      await api.updateVacancy(this.vacancyId, { status });
     },
   },
 };
@@ -129,12 +148,12 @@ export default {
 
 .col-2 {
   min-width: 400px;
-  // max-width: 500px;
+  max-width: 500px;
 }
 
 .col-3 {
-  min-width: 500px;
-  max-width: 600px;
+  min-width: 400px;
+  width: 100%;
 }
 </style>
 
