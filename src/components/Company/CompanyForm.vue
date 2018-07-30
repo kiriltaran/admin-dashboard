@@ -3,6 +3,7 @@
     ref="companyForm" 
     :model="companyForm"
     :rules="rules"
+    label-position="top"
   >
     <el-form-item 
       label="Название компании" 
@@ -31,10 +32,11 @@
       prop="website">
       <el-input v-model="companyForm.website"/>
     </el-form-item>
-    <div class="company-description mb-20">
-      <div class="label mb-10">Информация о компании</div>
+    <el-form-item 
+      label="Информация о компании" 
+      prop="description">
       <wysiwyg v-model="companyForm.description"/>
-    </div>
+    </el-form-item>
     <el-button 
       type="primary"
       size="medium"
@@ -45,6 +47,15 @@
 
 <script>
 import { VueEditor } from 'vue2-editor';
+
+const COMPANY_DEFAULT = {
+  name: '',
+  tin: '',
+  address: '',
+  phone: '',
+  website: '',
+  description: '',
+};
 
 export default {
   components: {
@@ -60,14 +71,7 @@ export default {
   },
   data() {
     return {
-      companyForm: {
-        name: '',
-        tin: '',
-        address: '',
-        phone: '',
-        website: '',
-        description: '',
-      },
+      companyForm: COMPANY_DEFAULT,
       rules: {
         name: [
           {
@@ -90,8 +94,13 @@ export default {
       },
     };
   },
-  mounted() {
-    this.initForm();
+  watch: {
+    formData: {
+      handler() {
+        this.initForm();
+      },
+      immediate: true,
+    },
   },
   methods: {
     onSubmit() {
@@ -103,9 +112,7 @@ export default {
       });
     },
     initForm() {
-      if (this.formData) {
-        this.companyForm = { ...this.formData };
-      }
+      this.companyForm = this.formData ? { ...this.formData } : COMPANY_DEFAULT;
     },
   },
 };

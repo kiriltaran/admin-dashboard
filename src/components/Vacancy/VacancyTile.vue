@@ -2,7 +2,7 @@
   <el-card 
     :body-style="{padding: '10px'}"
     class="vacancy-tile"
-    @click.native="onClick">
+  >
     <div class="tile-header mb-10">
       <div class="options label">{{ vacancy.category }},  {{ vacancy.specialization }}, {{ vacancy.location }} +{{ vacancy.remoteness }} км</div>
       <div class="time label"><i class="el-icon-time"/> 3 дня</div>
@@ -10,15 +10,14 @@
     <div class="salary mb-10">{{ vacancy.salary }}</div>
     <div class="title mb-10">{{ vacancy.title }}</div>
     <div 
-      :class="isShowingStatus ? '':'hidden'" 
+      :class="isActive ? '':'hidden'" 
       class="status">
       <div class="label">статус</div>
-      <vacancy-status-selector 
-        :value="vacancy.value" 
-        @input="onChangeStatus"/>
+      <vacancy-status-selector v-model="status"/>
       <el-button 
         size="mini" 
-        type="primary">Обновить</el-button>
+        type="primary"
+        @click="onClickChangeStatus">Изменить</el-button>
     </div>
   </el-card>
 </template>
@@ -37,18 +36,32 @@ export default {
         return null;
       },
     },
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   data() {
     return {
-      isShowingStatus: false,
+      status: 'regular',
     };
   },
-  methods: {
-    onClick() {
-      this.isShowingStatus = !this.isShowingStatus;
+  watch: {
+    vacancy: {
+      handler() {
+        this.initStatus();
+      },
+      immediate: true,
+      deep: true,
     },
-    onChangeStatus(status) {
-      this.$emit('change-status', status);
+  },
+  methods: {
+    initStatus() {
+      this.status = this.vacancy.status;
+    },
+    onClickChangeStatus() {
+      this.$emit('change-status', this.status);
     },
   },
 };

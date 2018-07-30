@@ -4,7 +4,9 @@
       v-if="isShowingForm"
       :form-data="vacancyId ? vacancy : null"
       @submit="onSubmit"/>
-    <vacancy-info v-if="isShowingInfo"/>
+    <vacancy-info 
+      v-if="isShowingInfo" 
+      :vacancy="vacancy"/>
   </div>
 </template>
 
@@ -22,15 +24,11 @@ export default {
   props: {
     vacancyId: {
       type: String,
-      default() {
-        return null;
-      },
+      default: '',
     },
     companyId: {
       type: String,
-      default() {
-        return null;
-      },
+      default: '',
     },
   },
 
@@ -71,17 +69,8 @@ export default {
       this.isShowingForm = true;
     },
     async onSubmit(data) {
-      try {
-        if (this.vacancyId === '') {
-          await api.createVacancy(this.companyId, data);
-          this.$emit('new-vacancy');
-        } else {
-          await api.updateVacancy(this.vacancyId, data);
-          this.showInfo();
-        }
-      } catch (e) {
-        window.console.log(e);
-      }
+      this.$emit('submit', data);
+      this.showInfo();
     },
   },
 };

@@ -18,7 +18,7 @@
             <el-button 
               type="primary" 
               size="mini"
-              @click="onClickNew"
+              @click="onClickNewVacancy"
             >Добавить</el-button>
           </el-row>
         </div>
@@ -28,8 +28,10 @@
           <vacancy-tile 
             v-for="(vacancy, id) in vacancies"
             :key="id"
-            :vacancy="vacancy" 
+            :vacancy="vacancy"
+            :is-active="id===vacancyId"
             class="list-item"
+            @click.native="onClickVacancy(id)"
             @change-status="onChangeStatus"/>
         </div>
       </div>
@@ -52,9 +54,11 @@ export default {
   props: {
     companyId: {
       type: String,
-      default() {
-        return null;
-      },
+      default: '',
+    },
+    vacancyId: {
+      type: String,
+      default: '',
     },
     vacancies: {
       type: Object,
@@ -119,8 +123,11 @@ export default {
       this.isShowingInfo = false;
       this.isShowingForm = true;
     },
-    onClickNew() {
+    onClickNewVacancy() {
       this.$emit('click-new');
+    },
+    onClickVacancy(id) {
+      this.$emit('select-vacancy', id);
     },
     onChangeStatus(status) {
       this.$emit('change-status', status);
