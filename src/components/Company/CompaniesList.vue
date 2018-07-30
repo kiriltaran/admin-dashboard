@@ -21,7 +21,7 @@
       <li 
         v-for="(company, id) in companies" 
         :key="id"
-        :class="activeId === id ? 'active' : ''"
+        :class="companyId === id ? 'active' : ''"
         class="list-item"
         @click="onClickCompany(id)">
         {{ company.name }}
@@ -39,12 +39,15 @@ export default {
         return {};
       },
     },
+    companyId: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       search: '',
       listHeight: 0,
-      activeId: '',
     };
   },
   mounted() {
@@ -62,7 +65,6 @@ export default {
       this.$emit('click-new');
     },
     onClickCompany(id) {
-      this.activeId = id;
       this.$emit('select-company', id);
     },
   },

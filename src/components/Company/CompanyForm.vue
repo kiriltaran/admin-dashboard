@@ -97,7 +97,7 @@ export default {
     onSubmit() {
       this.$refs.companyForm.validate(valid => {
         if (valid) {
-          this.$emit('save', this.companyForm);
+          this.$emit('submit', this.companyForm);
           this.$refs.companyForm.resetFields();
         }
       });

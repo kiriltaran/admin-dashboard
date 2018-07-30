@@ -4,25 +4,18 @@
     class="vacancy-tile"
     @click.native="onClick">
     <div class="tile-header mb-10">
-      <div class="options label">D,  ADR,  Киев + 200 км</div>
+      <div class="options label">{{ vacancy.category }},  {{ vacancy.specialization }}, {{ vacancy.location }} +{{ vacancy.remoteness }} км</div>
       <div class="time label"><i class="el-icon-time"/> 3 дня</div>
     </div>
-    <div class="salary mb-10">23 152 руб</div>
-    <div class="title mb-10">Название вакансии длинное в две стороки, водитель-дальнобойщик</div>
+    <div class="salary mb-10">{{ vacancy.salary }}</div>
+    <div class="title mb-10">{{ vacancy.title }}</div>
     <div 
       :class="isShowingStatus ? '':'hidden'" 
       class="status">
       <div class="label">статус</div>
-      <el-select 
-        v-model="status" 
-        size="mini"
-        class="status-selector">
-        <el-option
-          v-for="item in statusOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"/>
-      </el-select>
+      <vacancy-status-selector 
+        :value="vacancy.value" 
+        @input="onChangeStatus"/>
       <el-button 
         size="mini" 
         type="primary">Обновить</el-button>
@@ -31,30 +24,31 @@
 </template>
 
 <script>
+import VacancyStatusSelector from '@/components/Vacancy/VacancyStatusSelector.vue';
+
 export default {
+  components: {
+    VacancyStatusSelector,
+  },
+  props: {
+    vacancy: {
+      type: Object,
+      default() {
+        return null;
+      },
+    },
+  },
   data() {
     return {
-      status: 'regular',
-      statusOptions: [
-        {
-          value: 'unpublished',
-          label: 'неопубликована',
-        },
-        {
-          value: 'regular',
-          label: 'обычный',
-        },
-        {
-          value: 'top',
-          label: 'топ',
-        },
-      ],
       isShowingStatus: false,
     };
   },
   methods: {
     onClick() {
       this.isShowingStatus = !this.isShowingStatus;
+    },
+    onChangeStatus(status) {
+      this.$emit('change-status', status);
     },
   },
 };
