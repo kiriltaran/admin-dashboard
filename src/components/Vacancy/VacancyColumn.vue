@@ -2,8 +2,9 @@
   <div class="vacancy-column">
     <vacancy-form 
       v-if="isShowingForm"
-      :form-data="companyId ? company : null"
-      @save="onSaveForm"/>
+      :form-data="vacancyId ? vacancy : null"
+      @submit="onSubmit"/>
+    <vacancy-info v-if="isShowingInfo"/>
   </div>
 </template>
 
@@ -11,10 +12,12 @@
 <script>
 import api from '@/api';
 import VacancyForm from '@/components/Vacancy/VacancyForm.vue';
+import VacancyInfo from '@/components/Vacancy/VacancyInfo.vue';
 
 export default {
   components: {
     VacancyForm,
+    VacancyInfo,
   },
   props: {
     vacancyId: {
@@ -67,7 +70,7 @@ export default {
       this.isShowingInfo = false;
       this.isShowingForm = true;
     },
-    async onSaveForm(data) {
+    async onSubmit(data) {
       try {
         if (this.vacancyId === '') {
           await api.createVacancy(this.companyId, data);

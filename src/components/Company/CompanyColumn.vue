@@ -3,7 +3,7 @@
     <company-form
       v-if="isShowingForm"
       :form-data="companyId ? company : null"
-      @save="onSaveForm"/>
+      @submit="onSubmit"/>
     <template v-if="isShowingInfo">
       <company-info
         :company="company" 
@@ -26,9 +26,11 @@
           :style="{height: vacanciesHeight + 'px'}" 
           class="vacancies-list">
           <vacancy-tile 
-            v-for="vacancy in 10"
-            :key="vacancy.id" 
-            class="list-item"/>
+            v-for="(vacancy, id) in vacancies"
+            :key="id"
+            :vacancy="vacancy" 
+            class="list-item"
+            @change-status="onChangeStatus"/>
         </div>
       </div>
     </template>
@@ -96,18 +98,9 @@ export default {
     onEdit() {
       this.showForm();
     },
-    async onSaveForm(data) {
-      try {
-        if (this.companyId === '') {
-          await api.createCompany(data);
-          this.$emit('new-company');
-        } else {
-          await api.updateCompany(this.companyId, data);
-          this.showInfo();
-        }
-      } catch (e) {
-        window.console.log(e);
-      }
+    onSubmit(data) {
+      this.$emit('submit', data);
+      this.showInfo();
     },
     async loadCompany(companyId) {
       try {
@@ -128,6 +121,9 @@ export default {
     },
     onClickNew() {
       this.$emit('click-new');
+    },
+    onChangeStatus(status) {
+      this.$emit('change-status', status);
     },
   },
 };

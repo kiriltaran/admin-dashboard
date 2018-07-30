@@ -2,6 +2,7 @@
   <div class="dashboard">
     <div class="col-1 col">
       <companies-list 
+        :company-id="companyId"
         :companies="companies"
         @click-new="onClickNewCompany" 
         @select-company="onSelectCompany"/>
@@ -10,9 +11,10 @@
       <company-column 
         v-if="isShowingCompanyColumn" 
         :company-id="companyId"
+        :vacancy-id="vacancyId"
         :vacancies="vacancies"
         @click-new="onClickNewVacancy"
-        @new-company="onNewCompany" />
+        @submit="onSubmitCompany" />
     </div>
     <div class="col-3 col">
       <vacancy-column
@@ -72,15 +74,29 @@ export default {
     },
     onClickNewCompany() {
       this.companyId = '';
+      this.vacancyId = null;
     },
     onClickNewVacancy() {
       this.vacancyId = '';
     },
-    onSelectCompany(companyId) {
+    async onSelectCompany(companyId) {
       this.companyId = companyId;
+      this.vacancyId = null;
+      await this.loadVacancies(companyId);
     },
-    onNewCompany() {
-      this.loadCompanies();
+    async onSubmitCompany(data) {
+      try {
+        if (this.companyId === '') {
+          await api.createCompany(data);
+          await this.loadCompanies();
+          this.companyId = Object.keys(this.companies).pop();
+        } else {
+          await api.updateCompany(this.companyId, data);
+          await this.loadCompanies();
+        }
+      } catch (e) {
+        window.console.log(e);
+      }
     },
     onNewVacancy() {
       this.loadVacancies();
@@ -113,7 +129,12 @@ export default {
 
 .col-2 {
   min-width: 400px;
-  max-width: 500px;
+  // max-width: 500px;
+}
+
+.col-3 {
+  min-width: 500px;
+  max-width: 600px;
 }
 </style>
 
