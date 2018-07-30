@@ -3,22 +3,29 @@
     ref="vacancyForm" 
     :model="vacancyForm"
     :rules="rules"
+    label-position="top"
   >
     <el-form-item 
       label="Название вакансии" 
       prop="title">
       <el-input v-model="vacancyForm.title"/>
     </el-form-item>
-    <el-form-item 
-      label="Категория" 
-      prop="category">
-      <el-input v-model="vacancyForm.category" />
-    </el-form-item>
-    <el-form-item 
-      label="Специализация" 
-      prop="specialization">
-      <el-input v-model="vacancyForm.specialization"/>
-    </el-form-item>
+    <el-row :gutter="10">
+      <el-col :span="6">
+        <el-form-item 
+          label="Категория" 
+          prop="category">
+          <vacancy-category-selector v-model="vacancyForm.category"/>
+        </el-form-item>
+      </el-col>
+      <el-col :span="18">
+        <el-form-item 
+          label="Специализация" 
+          prop="specialization">
+          <vacancy-specialization-selector v-model="vacancyForm.specialization"/>
+        </el-form-item>
+      </el-col>
+    </el-row>
     <el-form-item 
       label="Расположение гаража" 
       prop="location">
@@ -34,10 +41,11 @@
       prop="salary">
       <el-input v-model="vacancyForm.salary"/>
     </el-form-item>
-    <div class="vacancy-description mb-20">
-      <div class="label mb-10">Описание вакансии</div>
+    <el-form-item 
+      label="Описание вакансии" 
+      prop="description">
       <wysiwyg v-model="vacancyForm.description"/>
-    </div>
+    </el-form-item>
     <el-button 
       type="primary"
       size="medium"
@@ -48,10 +56,14 @@
 
 <script>
 import { VueEditor } from 'vue2-editor';
+import VacancyCategorySelector from '@/components/Vacancy/VacancyCategorySelector.vue';
+import VacancySpecializationSelector from '@/components/Vacancy/VacancySpecializationSelector.vue';
 
 export default {
   components: {
     VueEditor,
+    VacancyCategorySelector,
+    VacancySpecializationSelector,
   },
   props: {
     formData: {
@@ -66,7 +78,7 @@ export default {
       vacancyForm: {
         title: '',
         category: '',
-        specialization: '',
+        specialization: [],
         location: '',
         remoteness: '',
         salary: '',
@@ -74,24 +86,36 @@ export default {
         status: '',
       },
       rules: {
-        // name: [
-        //   {
-        //     required: true,
-        //     message: 'Обязательное поле для заполнения',
-        //   },
-        // ],
-        // tin: [
-        //   {
-        //     required: true,
-        //     message: 'Обязательное поле для заполнения',
-        //   },
-        // ],
-        // phone: [
-        //   {
-        //     required: true,
-        //     message: 'Обязательное поле для заполнения',
-        //   },
-        // ],
+        title: [
+          {
+            required: true,
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
+        category: [
+          {
+            required: true,
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
+        location: [
+          {
+            required: true,
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
+        remoteness: [
+          {
+            required: true,
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
+        salary: [
+          {
+            required: true,
+            message: 'Обязательное поле для заполнения',
+          },
+        ],
       },
     };
   },

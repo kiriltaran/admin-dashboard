@@ -66,7 +66,7 @@ export default {
 
 body {
   font-size: 16px;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #app {
