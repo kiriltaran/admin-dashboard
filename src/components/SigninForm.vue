@@ -10,7 +10,7 @@
       <el-input 
         v-model="signinForm.email" 
         type="email"
-        @keyup.native.enter="validateForm"/>
+        @keyup.native.enter="onClickSubmit"/>
     </el-form-item>
     <el-form-item 
       label="Пароль" 
@@ -18,7 +18,7 @@
       <el-input 
         v-model="signinForm.password" 
         type="password"
-        @keyup.native.enter="validateForm"/>
+        @keyup.native.enter="onClickSubmit"/>
     </el-form-item>
     <el-button 
       type="primary" 
@@ -74,5 +74,3 @@ export default {
   margin: 0 auto;
 }
 </style>
-
-
