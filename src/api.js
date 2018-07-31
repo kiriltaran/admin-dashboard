@@ -44,7 +44,8 @@ const api = {
     const vacancies = await firebase
       .database()
       .ref('vacancies')
-      .equalTo(companyId, 'companyId')
+      .orderByChild('companyId')
+      .equalTo(companyId)
       .once('value');
 
     return vacancies.val();
