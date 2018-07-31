@@ -51,10 +51,15 @@
       class="status-selector"/>
     <el-button 
       type="primary"
-      size="mini"
       class="submit-btn" 
       @click="onSubmit">
       Сохранить
+    </el-button>
+    <el-button
+      v-if="formData"
+      class="cancel-btn" 
+      @click="onCancel">
+      Отмена
     </el-button>
   </el-form>
 </template>
@@ -64,6 +69,17 @@ import { VueEditor } from 'vue2-editor';
 import VacancyCategorySelector from '@/components/Vacancy/VacancyCategorySelector.vue';
 import VacancySpecializationSelector from '@/components/Vacancy/VacancySpecializationSelector.vue';
 import VacancyStatusSelector from '@/components/Vacancy/VacancyStatusSelector.vue';
+
+const VACANCY_DEFAULT = {
+  title: '',
+  category: '',
+  specialization: [],
+  location: '',
+  remoteness: '',
+  salary: '',
+  description: '',
+  status: 'regular',
+};
 
 export default {
   components: {
@@ -82,16 +98,7 @@ export default {
   },
   data() {
     return {
-      vacancyForm: {
-        title: '',
-        category: '',
-        specialization: [],
-        location: '',
-        remoteness: '',
-        salary: '',
-        description: '',
-        status: '',
-      },
+      vacancyForm: { ...VACANCY_DEFAULT },
       rules: {
         title: [
           {
@@ -126,6 +133,14 @@ export default {
       },
     };
   },
+  watch: {
+    formData: {
+      handler() {
+        this.initForm();
+      },
+      immediate: true,
+    },
+  },
   mounted() {
     this.initForm();
   },
@@ -138,10 +153,11 @@ export default {
         }
       });
     },
+    onCancel() {
+      this.$emit('cancel');
+    },
     initForm() {
-      if (this.formData) {
-        this.vacancyForm = { ...this.formData };
-      }
+      this.vacancyForm = this.formData ? { ...this.formData } : VACANCY_DEFAULT;
     },
   },
 };
@@ -149,7 +165,7 @@ export default {
 
 <style lang="scss" scoped>
 .status-selector {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 </style>
 

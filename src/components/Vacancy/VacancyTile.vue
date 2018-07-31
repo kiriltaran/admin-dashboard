@@ -25,7 +25,6 @@
       <div class="label">статус</div>
       <vacancy-status-selector v-model="status"/>
       <el-button 
-        size="mini" 
         type="primary"
         @click="onClickChangeStatus">Изменить</el-button>
     </div>
@@ -107,10 +106,6 @@ export default {
 .status {
   height: 50px;
   transition: all 0.3s linear;
-  &-selector {
-    width: 150px;
-    margin-right: 10px;
-  }
 }
 
 .hidden {

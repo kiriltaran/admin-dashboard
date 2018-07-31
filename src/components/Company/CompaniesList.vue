@@ -7,7 +7,6 @@
         <span class="head-title">Компании</span>
         <el-button 
           type="primary" 
-          size="mini"
           @click="onClickNew">Добавить</el-button>
       </el-row>
       <el-input 

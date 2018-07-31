@@ -4,7 +4,6 @@
       <el-button 
         type="primary" 
         icon="el-icon-edit-outline"
-        size="mini"
         class="edit-btn"
         @click="onClickEdit"/>
     </div>

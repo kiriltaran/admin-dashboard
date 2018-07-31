@@ -39,9 +39,16 @@
     </el-form-item>
     <el-button 
       type="primary"
-      size="mini"
       class="submit-btn" 
-      @click="onSubmit">Сохранить</el-button>
+      @click="onSubmit">
+      Сохранить
+    </el-button>
+    <el-button
+      v-if="formData"
+      class="cancel-btn" 
+      @click="onCancel">
+      Отмена
+    </el-button>
   </el-form>
 </template>
 
@@ -71,7 +78,7 @@ export default {
   },
   data() {
     return {
-      companyForm: COMPANY_DEFAULT,
+      companyForm: { ...COMPANY_DEFAULT },
       rules: {
         name: [
           {
@@ -110,6 +117,9 @@ export default {
           this.$refs.companyForm.resetFields();
         }
       });
+    },
+    onCancel() {
+      this.$emit('cancel');
     },
     initForm() {
       this.companyForm = this.formData ? { ...this.formData } : COMPANY_DEFAULT;

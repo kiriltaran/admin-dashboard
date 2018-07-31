@@ -1,7 +1,6 @@
 <template>
   <el-select
     :value="value"
-    size="mini"
     class="status-selector"
     @change="onChange">
     <el-option
