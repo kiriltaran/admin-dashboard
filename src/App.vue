@@ -5,7 +5,7 @@
       <transition 
         name="el-fade-in-linear" 
         mode="out-in">
-        <router-view/>
+        <router-view :user="user"/>
       </transition>
     </el-main>
   </div>

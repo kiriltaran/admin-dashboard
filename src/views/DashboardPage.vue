@@ -56,6 +56,14 @@ export default {
       return this.vacancyId !== null;
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    const role = await api.getUserRole();
+    if (role === 'admin') {
+      next();
+    } else {
+      await api.signout();
+    }
+  },
   mounted() {
     this.loadCompanies();
   },
