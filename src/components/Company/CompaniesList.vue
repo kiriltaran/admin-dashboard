@@ -12,13 +12,14 @@
       <el-input 
         v-model="search"
         class="search" 
-        placeholder="Введите название или ИНН"/>
+        placeholder="Введите название или ИНН"
+      />
     </div>
     <ul 
       :style="{height: listHeight + 'px'}"
       class="companies-list">
       <li 
-        v-for="(company, id) in companies" 
+        v-for="(company, id) in companiesList" 
         :key="id"
         :class="companyId === id ? 'active' : ''"
         class="list-item"
@@ -48,6 +49,20 @@ export default {
       search: '',
       listHeight: 0,
     };
+  },
+  computed: {
+    companiesList() {
+      const result = {};
+      Object.keys(this.companies).forEach(el => {
+        if (
+          this.companies[el].name.includes(this.search) ||
+          this.companies[el].tin.includes(this.search)
+        ) {
+          result[el] = this.companies[el];
+        }
+      });
+      return result;
+    },
   },
   mounted() {
     this.initListHeight();
