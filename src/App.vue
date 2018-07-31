@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import api from '@/api';
 import Raven from 'raven-js';
 import firebase from 'firebase/app';
 import HeaderComponent from '@/components/HeaderComponent.vue';
@@ -31,14 +32,19 @@ export default {
   },
   methods: {
     observeAuth() {
-      firebase.auth().onAuthStateChanged(user => {
-        this.user = user;
+      firebase.auth().onAuthStateChanged(async user => {
         if (user) {
-          Raven.setUserContext({
-            id: user.uid,
-            email: user.email,
-          });
-          this.$router.push({ path: '/' });
+          const role = await api.getUserRole();
+          if (role === 'admin') {
+            this.user = user;
+            Raven.setUserContext({
+              id: user.uid,
+              email: user.email,
+            });
+            this.$router.push({ path: '/' });
+          } else {
+            await api.signout();
+          }
         } else {
           this.$router.push({ path: '/auth' });
         }

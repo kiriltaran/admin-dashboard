@@ -82,12 +82,8 @@ const api = {
     }
   },
   // AUTH
-  getUserId() {
-    const userId = firebase.auth().currentUser.uid;
-    return userId;
-  },
   async getUserRole() {
-    const userId = this.getUserId();
+    const userId = await firebase.auth().currentUser.uid;
     const role = await firebase
       .database()
       .ref(`users/${userId}/role`)
