@@ -23,7 +23,9 @@
       :class="isActive ? '':'hidden'" 
       class="status">
       <div class="label">статус</div>
-      <vacancy-status-selector v-model="status"/>
+      <vacancy-status-selector 
+        v-model="status" 
+        class="status-selector"/>
       <el-button 
         type="primary"
         @click="onClickChangeStatus">Изменить</el-button>
@@ -106,6 +108,9 @@ export default {
 .status {
   height: 50px;
   transition: all 0.3s linear;
+  &-selector {
+    margin-right: 10px;
+  }
 }
 
 .hidden {
