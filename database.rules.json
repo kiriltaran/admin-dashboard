@@ -1,6 +1,19 @@
 {
   "rules": {
-    ".read": false,
-    ".write": false
+    ".read": "auth !== null",
+    ".write": "auth !== null && root.child('users/'+auth.uid).exists() && root.child('users/'+auth.uid+'/role').val() === 'admin'",
+    "users": {
+      "$uid": {
+        ".read": "data.child(auth.uid).exists()",
+        ".write": "auth.uid === $uid"
+      }
+    },
+    "companies": {
+      ".read": true
+    },
+    "vacancies": {
+      ".read": true,
+      ".indexOn": ["companyId", "status", "category"]
+    }
   }
 }
