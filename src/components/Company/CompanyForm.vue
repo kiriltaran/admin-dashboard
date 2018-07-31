@@ -39,7 +39,7 @@
     </el-form-item>
     <el-button 
       type="primary"
-      size="medium"
+      size="mini"
       class="submit-btn" 
       @click="onSubmit">Сохранить</el-button>
   </el-form>

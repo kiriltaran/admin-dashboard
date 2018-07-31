@@ -46,11 +46,16 @@
       prop="description">
       <wysiwyg v-model="vacancyForm.description"/>
     </el-form-item>
+    <vacancy-status-selector 
+      v-model="vacancyForm.status" 
+      class="status-selector"/>
     <el-button 
       type="primary"
-      size="medium"
+      size="mini"
       class="submit-btn" 
-      @click="onSubmit">Сохранить</el-button>
+      @click="onSubmit">
+      Сохранить
+    </el-button>
   </el-form>
 </template>
 
@@ -58,12 +63,14 @@
 import { VueEditor } from 'vue2-editor';
 import VacancyCategorySelector from '@/components/Vacancy/VacancyCategorySelector.vue';
 import VacancySpecializationSelector from '@/components/Vacancy/VacancySpecializationSelector.vue';
+import VacancyStatusSelector from '@/components/Vacancy/VacancyStatusSelector.vue';
 
 export default {
   components: {
     VueEditor,
     VacancyCategorySelector,
     VacancySpecializationSelector,
+    VacancyStatusSelector,
   },
   props: {
     formData: {
@@ -139,5 +146,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.status-selector {
+  margin-right: 20px;
+}
+</style>
+
 
 

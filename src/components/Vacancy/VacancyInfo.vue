@@ -1,8 +1,26 @@
 <template>
   <div class="vacancy-info">
+    <div class="edit-wrapper mb-20">
+      <el-button 
+        type="primary" 
+        icon="el-icon-edit-outline"
+        size="mini"
+        class="edit-btn"
+        @click="onClickEdit"/>
+    </div>
     <div class="info-main mb-20">
       <div class="main-header mb-10">
-        <div class="options label">{{ vacancy.category }},  {{ vacancy.specialization }}, {{ vacancy.location }} +{{ vacancy.remoteness }} км</div>
+        <div class="options label">
+          <div class="options-item">{{ vacancy.category }},</div>
+          <div class="options-item">
+            <template 
+              v-for="item in vacancy.specialization" >
+              {{ item }},
+            </template>
+          </div>
+          <div class="options-item">{{ vacancy.location }},</div>
+          <div class="options-item">+{{ vacancy.remoteness }} км</div>
+        </div>
         <div class="time label"><i class="el-icon-time"/> 3 дня</div>
       </div>
       <div class="salary mb-10">{{ vacancy.salary }}</div>
@@ -24,10 +42,18 @@ export default {
       },
     },
   },
+  methods: {
+    onClickEdit() {
+      this.$emit('edit');
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.edit-wrapper {
+  text-align: right;
+}
 .info-main {
   padding: 40px 20px;
   background-color: rgba(0, 0, 0, 0.05);
@@ -36,6 +62,13 @@ export default {
 .main-header {
   display: flex;
   justify-content: space-between;
+}
+
+.options {
+  &-item {
+    display: inline-block;
+    margin-right: 5px;
+  }
 }
 
 .salary {
