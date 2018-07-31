@@ -71,6 +71,11 @@ export default {
   }
 }
 
+.time {
+  text-align: right;
+  min-width: 60px;
+}
+
 .salary {
   font-size: 20px;
 }

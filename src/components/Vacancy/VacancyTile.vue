@@ -4,7 +4,17 @@
     class="vacancy-tile"
   >
     <div class="tile-header mb-10">
-      <div class="options label">{{ vacancy.category }},  {{ vacancy.specialization }}, {{ vacancy.location }} +{{ vacancy.remoteness }} км</div>
+      <div class="options label">
+        <div class="options-item">{{ vacancy.category }},</div>
+        <div class="options-item">
+          <template 
+            v-for="item in vacancy.specialization" >
+            {{ item }},
+          </template>
+        </div>
+        <div class="options-item">{{ vacancy.location }},</div>
+        <div class="options-item">+{{ vacancy.remoteness }} км</div>
+      </div>
       <div class="time label"><i class="el-icon-time"/> 3 дня</div>
     </div>
     <div class="salary mb-10">{{ vacancy.salary }}</div>
@@ -76,6 +86,18 @@ export default {
 .tile-header {
   display: flex;
   justify-content: space-between;
+}
+
+.options {
+  &-item {
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+.time {
+  text-align: right;
+  min-width: 60px;
 }
 
 .salary {
