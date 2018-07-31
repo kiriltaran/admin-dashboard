@@ -103,7 +103,7 @@ export default {
     async onSubmitVacancy(data) {
       try {
         if (this.vacancyId === '') {
-          await api.createVacancy(data);
+          await api.createVacancy(this.companyId, data);
           await this.loadVacancies();
           this.vacancyId = Object.keys(this.vacancies).pop();
         } else {
