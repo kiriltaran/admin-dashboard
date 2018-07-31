@@ -4,6 +4,7 @@
       v-if="isShowingForm"
       :form-data="vacancyId ? vacancy : null"
       @submit="onSubmit"
+      @cancel="onCancel"
     />
     <vacancy-info 
       v-if="isShowingInfo" 
@@ -74,8 +75,11 @@ export default {
     onEdit() {
       this.showForm();
     },
-    async onSubmit(data) {
+    onSubmit(data) {
       this.$emit('submit', data);
+      this.showInfo();
+    },
+    onCancel() {
       this.showInfo();
     },
   },

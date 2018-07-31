@@ -1,5 +1,7 @@
 <template>
-  <div class="dashboard">
+  <div 
+    v-loading="loading" 
+    class="dashboard">
     <div class="col-1 col">
       <companies-list 
         :company-id="companyId"
@@ -42,6 +44,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       companies: {},
       vacancies: {},
       companyId: null,
@@ -62,16 +65,22 @@ export default {
   methods: {
     async loadCompanies() {
       try {
+        this.loading = true;
         this.companies = await api.fetchCompanies();
       } catch (e) {
         window.console.log(e);
+      } finally {
+        this.loading = false;
       }
     },
     async loadVacancies() {
       try {
+        this.loading = true;
         this.vacancies = await api.fetchVacancies(this.companyId);
       } catch (e) {
         window.console.log(e);
+      } finally {
+        this.loading = false;
       }
     },
     onClickNewCompany() {
@@ -89,36 +98,51 @@ export default {
     async onSubmitCompany(data) {
       try {
         if (this.companyId === '') {
+          this.loading = true;
           await api.createCompany(data);
           await this.loadCompanies();
           this.companyId = Object.keys(this.companies).pop();
         } else {
+          this.loading = true;
           await api.updateCompany(this.companyId, data);
           await this.loadCompanies();
         }
       } catch (e) {
         window.console.log(e);
+      } finally {
+        this.loading = false;
       }
     },
     async onSubmitVacancy(data) {
       try {
         if (this.vacancyId === '') {
+          this.loading = true;
           await api.createVacancy(this.companyId, data);
           await this.loadVacancies();
           this.vacancyId = Object.keys(this.vacancies).pop();
         } else {
+          this.loading = true;
           await api.updateVacancy(this.vacancyId, data);
           await this.loadVacancies();
         }
       } catch (e) {
         window.console.log(e);
+      } finally {
+        this.loading = false;
       }
     },
     onSelectVacancy(id) {
       this.vacancyId = id;
     },
     async onChangeStatus(status) {
-      await api.updateVacancy(this.vacancyId, { status });
+      try {
+        this.loading = true;
+        await api.updateVacancy(this.vacancyId, { status });
+      } catch (e) {
+        window.console.log(e);
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };

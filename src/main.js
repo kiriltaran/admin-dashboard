@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'production') {
     .install();
 }
 
-Vue.use(ElementUI, { locale });
+Vue.use(ElementUI, { size: 'medium', locale });
 Vue.use(wysiwyg, {
   hideModules: {
     code: true,

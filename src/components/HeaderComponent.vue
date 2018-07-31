@@ -13,11 +13,11 @@
       <div 
         v-if="user" 
         class="user">
-        <div class="user-email">{{ user.email }}</div>
+        
         <el-dropdown 
           trigger="click" 
           @command="handleCommand">
-          <i class="el-icon-arrow-down dropdown-icon"/>
+          <div class="user-email">{{ user.email }} <i class="el-icon-arrow-down dropdown-icon"/></div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="signout">Выход</el-dropdown-item>
           </el-dropdown-menu>
@@ -75,9 +75,8 @@ export default {
   display: flex;
   justify-content: space-between;
   min-width: 180px;
-
-  &-title {
-    font-size: 14px;
+  &-email {
+    cursor: pointer;
   }
 }
 

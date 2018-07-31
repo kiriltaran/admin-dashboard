@@ -4,7 +4,6 @@
       <el-button 
         type="primary" 
         icon="el-icon-edit-outline"
-        size="mini"
         class="edit-btn"
         @click="onClickEdit"/>
     </div>
@@ -69,6 +68,11 @@ export default {
     display: inline-block;
     margin-right: 5px;
   }
+}
+
+.time {
+  text-align: right;
+  min-width: 60px;
 }
 
 .salary {
