@@ -8,8 +8,10 @@ import 'firebase/storage';
 import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/ru-RU';
 import wysiwyg from 'vue-wysiwyg';
+import Croppa from 'vue-croppa';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'vue-wysiwyg/dist/vueWysiwyg.css';
+import 'vue-croppa/dist/vue-croppa.css';
 
 import App from './App.vue';
 import router from './router';
@@ -36,6 +38,7 @@ Vue.use(wysiwyg, {
     justifyRight: true,
   },
 });
+Vue.use(Croppa);
 
 Vue.config.productionTip = false;
 
