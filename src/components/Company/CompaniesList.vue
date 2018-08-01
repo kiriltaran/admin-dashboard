@@ -55,7 +55,9 @@ export default {
       const result = {};
       Object.keys(this.companies).forEach(el => {
         if (
-          this.companies[el].name.includes(this.search) ||
+          this.companies[el].name
+            .toLowerCase()
+            .includes(this.search.toLowerCase()) ||
           this.companies[el].tin.includes(this.search)
         ) {
           result[el] = this.companies[el];
