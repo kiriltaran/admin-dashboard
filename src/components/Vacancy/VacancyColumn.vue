@@ -3,10 +3,14 @@
     <vacancy-form 
       v-if="isShowingForm"
       :form-data="vacancyId ? vacancy : null"
-      @submit="onSubmit"/>
+      @submit="onSubmit"
+      @cancel="onCancel"
+    />
     <vacancy-info 
       v-if="isShowingInfo" 
-      :vacancy="vacancy"/>
+      :vacancy="vacancy"
+      @edit="onEdit"
+    />
   </div>
 </template>
 
@@ -68,8 +72,14 @@ export default {
       this.isShowingInfo = false;
       this.isShowingForm = true;
     },
-    async onSubmit(data) {
+    onEdit() {
+      this.showForm();
+    },
+    onSubmit(data) {
       this.$emit('submit', data);
+      this.showInfo();
+    },
+    onCancel() {
       this.showInfo();
     },
   },

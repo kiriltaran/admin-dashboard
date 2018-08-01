@@ -4,7 +4,17 @@
     class="vacancy-tile"
   >
     <div class="tile-header mb-10">
-      <div class="options label">{{ vacancy.category }},  {{ vacancy.specialization }}, {{ vacancy.location }} +{{ vacancy.remoteness }} км</div>
+      <div class="options label">
+        <div class="options-item">{{ vacancy.category }},</div>
+        <div class="options-item">
+          <template 
+            v-for="item in vacancy.specialization" >
+            {{ item }},
+          </template>
+        </div>
+        <div class="options-item">{{ vacancy.location }},</div>
+        <div class="options-item">+{{ vacancy.remoteness }} км</div>
+      </div>
       <div class="time label"><i class="el-icon-time"/> 3 дня</div>
     </div>
     <div class="salary mb-10">{{ vacancy.salary }}</div>
@@ -13,9 +23,10 @@
       :class="isActive ? '':'hidden'" 
       class="status">
       <div class="label">статус</div>
-      <vacancy-status-selector v-model="status"/>
+      <vacancy-status-selector 
+        v-model="status" 
+        class="status-selector"/>
       <el-button 
-        size="mini" 
         type="primary"
         @click="onClickChangeStatus">Изменить</el-button>
     </div>
@@ -78,6 +89,18 @@ export default {
   justify-content: space-between;
 }
 
+.options {
+  &-item {
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+.time {
+  text-align: right;
+  min-width: 60px;
+}
+
 .salary {
   font-size: 20px;
 }
@@ -86,7 +109,6 @@ export default {
   height: 50px;
   transition: all 0.3s linear;
   &-selector {
-    width: 150px;
     margin-right: 10px;
   }
 }

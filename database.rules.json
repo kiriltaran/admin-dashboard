@@ -8,7 +8,11 @@
         ".write": "auth.uid === $uid"
       }
     },
+    "companies": {
+      ".read": true
+    },
     "vacancies": {
+      ".read": true,
       ".indexOn": ["companyId", "status", "category"]
     }
   }

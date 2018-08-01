@@ -7,23 +7,23 @@
         <span class="head-title">Компании</span>
         <el-button 
           type="primary" 
-          size="mini"
           @click="onClickNew">Добавить</el-button>
       </el-row>
       <el-input 
         v-model="search"
         class="search" 
-        placeholder="Введите название или ИНН"/>
+        placeholder="Введите название или ИНН"
+      />
     </div>
     <ul 
       :style="{height: listHeight + 'px'}"
       class="companies-list">
       <li 
-        v-for="(company, id) in companies" 
-        :key="id"
-        :class="companyId === id ? 'active' : ''"
+        v-for="company in companiesList" 
+        :key="company.id"
+        :class="companyId === company.id ? 'active' : ''"
         class="list-item"
-        @click="onClickCompany(id)">
+        @click="onClickCompany(company.id)">
         {{ company.name }}
       </li>
     </ul>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import sortBy from 'lodash.sortby';
+
 export default {
   props: {
     companies: {
@@ -49,6 +51,22 @@ export default {
       search: '',
       listHeight: 0,
     };
+  },
+  computed: {
+    companiesList() {
+      const result = [];
+      Object.keys(this.companies).forEach(el => {
+        if (
+          this.companies[el].name
+            .toLowerCase()
+            .includes(this.search.toLowerCase()) ||
+          this.companies[el].tin.includes(this.search)
+        ) {
+          result.push({ ...this.companies[el], id: el });
+        }
+      });
+      return sortBy(result, 'name');
+    },
   },
   mounted() {
     this.initListHeight();

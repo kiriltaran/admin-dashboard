@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import firebase from 'firebase/app';
 
 const api = {
@@ -83,6 +82,15 @@ const api = {
     }
   },
   // AUTH
+  async getUserRole() {
+    const userId = await firebase.auth().currentUser.uid;
+    const role = await firebase
+      .database()
+      .ref(`users/${userId}/role`)
+      .once('value');
+
+    return role.val();
+  },
   async signin(email, password) {
     try {
       const user = await firebase

@@ -3,12 +3,15 @@
     <company-form
       v-if="isShowingForm"
       :form-data="companyId ? company : null"
-      @submit="onSubmit"/>
+      @submit="onSubmit"
+      @cancel="onCancel"
+    />
     <template v-if="isShowingInfo">
       <company-info
         :company="company" 
         class="company-info mb-20" 
-        @edit="onEdit"/>
+        @edit="onEdit"
+      />
       <div class="vacancies">
         <div class="vacancies-header mb-10">
           <el-row 
@@ -17,7 +20,6 @@
             <div class="title">Вакансии</div>
             <el-button 
               type="primary" 
-              size="mini"
               @click="onClickNewVacancy"
             >Добавить</el-button>
           </el-row>
@@ -104,6 +106,9 @@ export default {
     },
     onSubmit(data) {
       this.$emit('submit', data);
+      this.showInfo();
+    },
+    onCancel() {
       this.showInfo();
     },
     async loadCompany(companyId) {
