@@ -168,6 +168,3 @@ export default {
   margin-right: 10px;
 }
 </style>
-
-
-

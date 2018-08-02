@@ -85,5 +85,3 @@ export default {
   outline: none;
 }
 </style>
-
-

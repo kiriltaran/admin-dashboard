@@ -110,4 +110,3 @@ export default {
   -webkit-line-clamp: initial;
 }
 </style>
-

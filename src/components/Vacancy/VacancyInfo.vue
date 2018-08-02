@@ -88,4 +88,3 @@ export default {
   list-style-position: inside;
 }
 </style>
-
