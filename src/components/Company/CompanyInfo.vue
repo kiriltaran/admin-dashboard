@@ -38,7 +38,7 @@
       </div>
       <div class="company-logo">
         <img 
-          src="https://via.placeholder.com/150x150" 
+          :src="company.logo" 
           class="logo-icon">
       </div>
     </el-row>
@@ -95,6 +95,7 @@ export default {
 .company-logo {
   display: flex;
   .logo-icon {
+    width: 150px;
     align-self: center;
   }
 }

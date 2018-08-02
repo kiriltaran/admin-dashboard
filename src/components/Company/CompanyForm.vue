@@ -86,7 +86,6 @@ export default {
   data() {
     return {
       croppa: {},
-      dataUrl: '',
       companyForm: { ...COMPANY_DEFAULT },
       rules: {
         name: [
