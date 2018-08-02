@@ -15,7 +15,7 @@
         <div class="options-item">{{ vacancy.location }},</div>
         <div class="options-item">+{{ vacancy.remoteness }} км</div>
       </div>
-      <div class="time label"><i class="el-icon-time"/> 3 дня</div>
+      <div class="time label"><i class="el-icon-time"/> {{ vacancy.createdTime | vacancyTime }}д</div>
     </div>
     <div class="salary mb-10">{{ vacancy.salary }}</div>
     <div class="title mb-10">{{ vacancy.title }}</div>
@@ -34,11 +34,15 @@
 </template>
 
 <script>
+import getVacancyTime from '@/helpers';
 import VacancyStatusSelector from '@/components/Vacancy/VacancyStatusSelector.vue';
 
 export default {
   components: {
     VacancyStatusSelector,
+  },
+  filters: {
+    vacancyTime: value => getVacancyTime(value),
   },
   props: {
     vacancy: {
@@ -52,7 +56,6 @@ export default {
       default: false,
     },
   },
-
   data() {
     return {
       status: 'regular',
@@ -118,4 +121,3 @@ export default {
   opacity: 0;
 }
 </style>
-

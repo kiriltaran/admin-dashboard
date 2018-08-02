@@ -38,6 +38,25 @@ const api = {
       throw e;
     }
   },
+  uploadLogo(name, blob) {
+    return new Promise((resolve, reject) => {
+      const storageRef = firebase.storage().ref();
+      const task = storageRef.child(`images/logos/${name}`).put(blob);
+
+      task.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        () => {},
+        error => {
+          reject(new Error(error));
+        },
+        () => {
+          task.snapshot.ref.getDownloadURL().then(downloadURL => {
+            resolve(downloadURL);
+          });
+        },
+      );
+    });
+  },
   // VACANCY
   async fetchVacancies(companyId) {
     const vacancies = await firebase

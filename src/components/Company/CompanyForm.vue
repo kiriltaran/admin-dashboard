@@ -32,6 +32,11 @@
       prop="website">
       <el-input v-model="companyForm.website"/>
     </el-form-item>
+    <croppa 
+      v-model="croppa" 
+      :width="150"
+      :height="150"
+    />
     <el-form-item 
       label="Информация о компании" 
       prop="description">
@@ -53,6 +58,7 @@
 </template>
 
 <script>
+import api from '@/api';
 import { VueEditor } from 'vue2-editor';
 
 const COMPANY_DEFAULT = {
@@ -61,6 +67,7 @@ const COMPANY_DEFAULT = {
   address: '',
   phone: '',
   website: '',
+  logo: '',
   description: '',
 };
 
@@ -78,6 +85,7 @@ export default {
   },
   data() {
     return {
+      croppa: {},
       companyForm: { ...COMPANY_DEFAULT },
       rules: {
         name: [
@@ -110,11 +118,25 @@ export default {
     },
   },
   methods: {
+    async uploadLogo() {
+      try {
+        const { name, type } = this.croppa.getChosenFile();
+        const blob = await this.croppa.promisedBlob(type, 0.8);
+        this.companyForm.logo = await api.uploadLogo(name, blob);
+      } catch (e) {
+        throw e;
+      }
+    },
     onSubmit() {
-      this.$refs.companyForm.validate(valid => {
+      this.$refs.companyForm.validate(async valid => {
         if (valid) {
-          this.$emit('submit', this.companyForm);
-          this.$refs.companyForm.resetFields();
+          try {
+            await this.uploadLogo();
+            this.$emit('submit', this.companyForm);
+            this.$refs.companyForm.resetFields();
+          } catch (e) {
+            window.console.log(e);
+          }
         }
       });
     },
@@ -127,5 +149,3 @@ export default {
   },
 };
 </script>
-
-
