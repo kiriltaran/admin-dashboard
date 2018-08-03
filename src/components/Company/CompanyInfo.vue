@@ -19,7 +19,7 @@
         </div>
         <div class="info-item mb-20">
           <div class="label">Адрес</div>
-          <div class="value">{{ company.address ? company.address : '-' }}</div>
+          <div class="value">{{ company.address && company.address.address ? company.address.address : '-' }}</div>
         </div>
         <div class="info-item mb-20">
           <div class="label">Контактный телефон</div>

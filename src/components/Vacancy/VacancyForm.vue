@@ -28,8 +28,13 @@
     </el-row>
     <el-form-item 
       label="Расположение гаража" 
-      prop="location">
-      <el-input v-model="vacancyForm.location" />
+      prop="location"
+    >
+      <vacancy-address
+        v-model="vacancyForm.location"
+        :address="vacancyForm.location.address"
+        :only-city="true"
+      />
     </el-form-item>
     <el-form-item 
       label="Удаленность рейсов от гаража" 
@@ -66,6 +71,7 @@
 
 <script>
 import { VueEditor } from 'vue2-editor';
+import VacancyAddress from '@/components/Address.vue';
 import VacancyCategorySelector from '@/components/Vacancy/VacancyCategorySelector.vue';
 import VacancySpecializationSelector from '@/components/Vacancy/VacancySpecializationSelector.vue';
 import VacancyStatusSelector from '@/components/Vacancy/VacancyStatusSelector.vue';
@@ -74,7 +80,7 @@ const VACANCY_DEFAULT = {
   title: '',
   category: '',
   specialization: [],
-  location: '',
+  location: {},
   remoteness: '',
   salary: '',
   description: '',
@@ -84,6 +90,7 @@ const VACANCY_DEFAULT = {
 export default {
   components: {
     VueEditor,
+    VacancyAddress,
     VacancyCategorySelector,
     VacancySpecializationSelector,
     VacancyStatusSelector,
