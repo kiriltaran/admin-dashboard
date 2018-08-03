@@ -172,9 +172,9 @@ export default {
       this.$refs.companyForm.validate(async valid => {
         if (valid) {
           try {
-            // await this.uploadLogo();
+            await this.uploadLogo();
             this.$emit('submit', this.companyForm);
-            // this.$refs.companyForm.resetFields();
+            this.$refs.companyForm.resetFields();
           } catch (e) {
             window.console.log(e);
           }
