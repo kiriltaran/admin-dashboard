@@ -38,7 +38,7 @@
     </el-form-item>
     <div class="logo-item">
       <croppa
-        v-if="isShowingCroppa" 
+        v-show="isShowingCroppa" 
         v-model="croppa"
         :width="150"
         :height="150"
@@ -46,10 +46,9 @@
         class="croppa"
       />
       <div 
-        v-else 
+        v-show="!isShowingCroppa" 
         class="prev"
       >
-        <!-- <i class="el-icon-delete remove-icon"/> -->
         <div 
           class="icon-wrapper" 
           @click="onClickRemoveLogo">
