@@ -32,11 +32,43 @@
       prop="website">
       <el-input v-model="companyForm.website"/>
     </el-form-item>
-    <croppa 
-      v-model="croppa" 
-      :width="150"
-      :height="150"
-    />
+    <div class="logo-item">
+      <croppa
+        v-if="isShowingCroppa" 
+        v-model="croppa"
+        :width="150"
+        :height="150"
+        remove-button-color="#409eff"
+        class="croppa"
+      />
+      <div 
+        v-else 
+        class="prev"
+      >
+        <!-- <i class="el-icon-delete remove-icon"/> -->
+        <div 
+          class="icon-wrapper" 
+          @click="onClickRemoveLogo">
+          <svg 
+            viewBox="0 0 1024 1024" 
+            version="1.1" 
+            xmlns="http://www.w3.org/2000/svg" 
+            xmlns:xlink="http://www.w3.org/1999/xlink" 
+            width="15" 
+            height="15" 
+            class="icon-remove">
+            <path 
+              d="M511.921231 0C229.179077 0 0 229.257846 0 512 0 794.702769 229.179077 1024 511.921231 1024 794.781538 1024 1024 794.702769 1024 512 1024 229.257846 794.781538 0 511.921231 0ZM732.041846 650.633846 650.515692 732.081231C650.515692 732.081231 521.491692 593.683692 511.881846 593.683692 502.429538 593.683692 373.366154 732.081231 373.366154 732.081231L291.761231 650.633846C291.761231 650.633846 430.316308 523.500308 430.316308 512.196923 430.316308 500.696615 291.761231 373.523692 291.761231 373.523692L373.366154 291.918769C373.366154 291.918769 503.453538 430.395077 511.881846 430.395077 520.349538 430.395077 650.515692 291.918769 650.515692 291.918769L732.041846 373.523692C732.041846 373.523692 593.447385 502.547692 593.447385 512.196923 593.447385 521.412923 732.041846 650.633846 732.041846 650.633846Z" 
+              fill="#409eff"/>
+          </svg>
+        </div>
+        <img 
+          :src="companyForm.logo" 
+          alt="prev-logo"
+          class="prev-logo"
+        >
+      </div>
+    </div>
     <el-form-item 
       label="Информация о компании" 
       prop="description">
@@ -109,6 +141,11 @@ export default {
       },
     };
   },
+  computed: {
+    isShowingCroppa() {
+      return !this.companyForm.logo;
+    },
+  },
   watch: {
     formData: {
       handler() {
@@ -119,12 +156,10 @@ export default {
   },
   methods: {
     async uploadLogo() {
-      try {
-        const { name, type } = this.croppa.getChosenFile();
-        const blob = await this.croppa.promisedBlob(type, 0.8);
-        this.companyForm.logo = await api.uploadLogo(name, blob);
-      } catch (e) {
-        throw e;
+      const file = this.croppa.getChosenFile();
+      if (file) {
+        const blob = await this.croppa.promisedBlob(file.type, 0.8);
+        this.companyForm.logo = await api.uploadLogo(file.name, blob);
       }
     },
     onSubmit() {
@@ -146,6 +181,36 @@ export default {
     initForm() {
       this.companyForm = this.formData ? { ...this.formData } : COMPANY_DEFAULT;
     },
+    onClickRemoveLogo() {
+      this.companyForm.logo = '';
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.prev {
+  width: 150px;
+  position: relative;
+  &-logo {
+    width: 100%;
+  }
+  .icon-wrapper {
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    filter: drop-shadow(-2px 2px 2px rgba(0, 0, 0, 0.7));
+    z-index: 10;
+    border: 2px solid #fff;
+    .icon-remove {
+      position: absolute;
+    }
+  }
+}
+</style>
