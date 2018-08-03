@@ -17,8 +17,12 @@
     </el-form-item>
     <el-form-item 
       label="Адрес" 
-      prop="address">
-      <el-input v-model="companyForm.address"/>
+      prop="address.address"
+    >
+      <company-address
+        v-model="companyForm.address"
+        :address="companyForm.address.address"
+      />
     </el-form-item>
     <el-form-item 
       label="Контактный телефон" 
@@ -91,12 +95,13 @@
 
 <script>
 import api from '@/api';
+import CompanyAddress from '@/components/Address.vue';
 import { VueEditor } from 'vue2-editor';
 
 const COMPANY_DEFAULT = {
   name: '',
   tin: '',
-  address: '',
+  address: {},
   phone: '',
   website: '',
   logo: '',
@@ -105,6 +110,7 @@ const COMPANY_DEFAULT = {
 
 export default {
   components: {
+    CompanyAddress,
     VueEditor,
   },
   props: {
@@ -166,9 +172,9 @@ export default {
       this.$refs.companyForm.validate(async valid => {
         if (valid) {
           try {
-            await this.uploadLogo();
+            // await this.uploadLogo();
             this.$emit('submit', this.companyForm);
-            this.$refs.companyForm.resetFields();
+            // this.$refs.companyForm.resetFields();
           } catch (e) {
             window.console.log(e);
           }

@@ -12,7 +12,12 @@
             {{ item }},
           </template>
         </div>
-        <div class="options-item">{{ vacancy.location }},</div>
+        <div
+          v-if="vacancy.location && vacancy.location.address"
+          class="options-item"
+        >
+          {{ vacancy.location.address }},
+        </div>
         <div class="options-item">+{{ vacancy.remoteness }} км</div>
       </div>
       <div class="time label"><i class="el-icon-time"/> {{ vacancy.createdTime | vacancyTime }}д</div>
