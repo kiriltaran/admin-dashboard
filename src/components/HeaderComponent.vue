@@ -52,7 +52,7 @@ export default {
     },
     async signout() {
       try {
-        await api.signout();
+        await api.auth.signout();
       } catch (e) {
         window.console.log(e);
       }

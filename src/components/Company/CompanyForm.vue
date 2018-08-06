@@ -187,7 +187,7 @@ export default {
       const file = this.croppa.getChosenFile();
       if (file) {
         const blob = await this.croppa.promisedBlob(file.type, 0.8);
-        this.companyForm.logo = await api.uploadLogo(file.name, blob);
+        this.companyForm.logo = await api.company.uploadLogo(file.name, blob);
       }
     },
     onSubmit() {
