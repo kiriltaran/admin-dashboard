@@ -58,7 +58,7 @@ export default {
   methods: {
     async loadVacancy(vacancyId) {
       try {
-        this.vacancy = await api.fetchVacancy(vacancyId);
+        this.vacancy = await api.vacancy.getItem(vacancyId);
       } catch (e) {
         window.console.log(e);
       }

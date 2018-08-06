@@ -34,7 +34,7 @@ export default {
     observeAuth() {
       firebase.auth().onAuthStateChanged(async user => {
         if (user) {
-          const role = await api.getUserRole();
+          const role = await api.auth.getUserRole(user.uid);
           if (role === 'admin') {
             this.user = user;
             Raven.setUserContext({
@@ -43,9 +43,10 @@ export default {
             });
             this.$router.push({ path: '/' });
           } else {
-            await api.signout();
+            await api.auth.signout();
           }
         } else {
+          this.user = null;
           this.$router.push({ path: '/auth' });
         }
       });
