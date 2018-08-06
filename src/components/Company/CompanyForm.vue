@@ -13,7 +13,9 @@
     <el-form-item 
       label="ИНН" 
       prop="tin">
-      <el-input v-model="companyForm.tin" />
+      <el-input 
+        v-model="companyForm.tin" 
+        type="number"/>
     </el-form-item>
     <el-form-item 
       label="Адрес" 
@@ -27,9 +29,12 @@
     <el-form-item 
       label="Контактный телефон" 
       prop="phone">
-      <el-input 
-        v-model="companyForm.phone" 
-        type="number"/>
+      <vue-tel-input 
+        v-model="companyForm.phone"
+        :placeholder="phonePlaceholder"
+        :class="isValidPhone ? 'success' : ''"
+        @onInput="onInputPhone"
+      />
     </el-form-item>
     <el-form-item 
       label="Веб-сайт" 
@@ -121,9 +126,18 @@ export default {
     },
   },
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (value && !this.isValidPhone) {
+        callback(new Error('Введите корректный номер телефона'));
+      }
+      callback();
+    };
+
     return {
       croppa: {},
       companyForm: { ...COMPANY_DEFAULT },
+      phonePlaceholder: '',
+      isValidPhone: false,
       rules: {
         name: [
           {
@@ -136,12 +150,18 @@ export default {
             required: true,
             message: 'Обязательное поле для заполнения',
           },
+          {
+            min: 10,
+            max: 10,
+            message: 'Количество символов должно быть равно 10',
+          },
         ],
         phone: [
           {
             required: true,
             message: 'Обязательное поле для заполнения',
           },
+          { validator: validatePhone },
         ],
       },
     };
@@ -159,12 +179,15 @@ export default {
       immediate: true,
     },
   },
+  mounted() {
+    this.initForm();
+  },
   methods: {
     async uploadLogo() {
       const file = this.croppa.getChosenFile();
       if (file) {
         const blob = await this.croppa.promisedBlob(file.type, 0.8);
-        this.companyForm.logo = await api.uploadLogo(file.name, blob);
+        this.companyForm.logo = await api.company.uploadLogo(file.name, blob);
       }
     },
     onSubmit() {
@@ -189,11 +212,15 @@ export default {
     onClickRemoveLogo() {
       this.companyForm.logo = '';
     },
+    onInputPhone({ isValid, country }) {
+      this.phonePlaceholder = `+${country.dialCode}...`;
+      this.isValidPhone = isValid;
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .prev {
   width: 150px;
   position: relative;
@@ -217,5 +244,28 @@ export default {
       position: absolute;
     }
   }
+}
+
+.vue-tel-input {
+  border-radius: 4px !important;
+  border: 1px solid #dcdfe6 !important;
+  outline: 0;
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: none !important;
+  .dropdown {
+    padding: 0 0 0 15px;
+    z-index: 999;
+    ul {
+      width: 370px;
+    }
+  }
+  input {
+    color: #606266;
+    font-size: 14px;
+  }
+}
+
+.success {
+  border-color: #67c23a !important;
 }
 </style>

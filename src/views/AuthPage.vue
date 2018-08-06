@@ -29,7 +29,7 @@ export default {
   methods: {
     async onSignin({ email, password }) {
       try {
-        await api.signin(email, password);
+        await api.auth.signin(email, password);
       } catch (e) {
         this.error = e;
       }
