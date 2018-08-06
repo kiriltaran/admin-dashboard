@@ -9,9 +9,11 @@ import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/ru-RU';
 import wysiwyg from 'vue-wysiwyg';
 import Croppa from 'vue-croppa';
+import VueTelInput from 'vue-tel-input';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'vue-wysiwyg/dist/vueWysiwyg.css';
 import 'vue-croppa/dist/vue-croppa.css';
+import 'vue-tel-input/dist/vue-tel-input.css';
 
 import App from './App.vue';
 import router from './router';
@@ -39,6 +41,7 @@ Vue.use(wysiwyg, {
   },
 });
 Vue.use(Croppa);
+Vue.use(VueTelInput);
 
 Vue.config.productionTip = false;
 

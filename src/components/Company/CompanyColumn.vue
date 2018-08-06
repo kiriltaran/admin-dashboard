@@ -113,7 +113,7 @@ export default {
     },
     async loadCompany(companyId) {
       try {
-        this.company = await api.fetchCompany(companyId);
+        this.company = await api.company.getItem(companyId);
       } catch (e) {
         window.console.log(e);
       }

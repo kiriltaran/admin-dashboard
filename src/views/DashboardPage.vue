@@ -66,7 +66,7 @@ export default {
     async loadCompanies() {
       try {
         this.loading = true;
-        this.companies = await api.fetchCompanies();
+        this.companies = await api.company.getList();
       } catch (e) {
         window.console.log(e);
       } finally {
@@ -76,7 +76,7 @@ export default {
     async loadVacancies() {
       try {
         this.loading = true;
-        this.vacancies = await api.fetchVacancies(this.companyId);
+        this.vacancies = await api.vacancy.getList(this.companyId);
       } catch (e) {
         window.console.log(e);
       } finally {
@@ -99,12 +99,12 @@ export default {
       try {
         if (this.companyId === '') {
           this.loading = true;
-          await api.createCompany(data);
+          await api.company.create(data);
           await this.loadCompanies();
           this.companyId = Object.keys(this.companies).pop();
         } else {
           this.loading = true;
-          await api.updateCompany(this.companyId, data);
+          await api.company.update(this.companyId, data);
           await this.loadCompanies();
         }
       } catch (e) {
@@ -117,12 +117,12 @@ export default {
       try {
         if (this.vacancyId === '') {
           this.loading = true;
-          await api.createVacancy(this.companyId, data);
+          await api.vacancy.create(this.companyId, data);
           await this.loadVacancies();
           this.vacancyId = Object.keys(this.vacancies).pop();
         } else {
           this.loading = true;
-          await api.updateVacancy(this.vacancyId, data);
+          await api.vacancy.update(this.vacancyId, data);
           await this.loadVacancies();
         }
       } catch (e) {
@@ -137,7 +137,7 @@ export default {
     async onChangeStatus(status) {
       try {
         this.loading = true;
-        await api.updateVacancy(this.vacancyId, { status });
+        await api.vacancy.update(this.vacancyId, { status });
       } catch (e) {
         window.console.log(e);
       } finally {
