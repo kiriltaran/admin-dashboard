@@ -1,5 +1,9 @@
 import firebase from 'firebase/app';
 
+function now() {
+  return firebase.database.ServerValue.TIMESTAMP;
+}
+
 async function getList(companyId) {
   const vacancies = await firebase
     .database()
@@ -10,6 +14,7 @@ async function getList(companyId) {
 
   return vacancies.val();
 }
+
 async function getItem(id) {
   const vacancy = await firebase
     .database()
@@ -18,6 +23,7 @@ async function getItem(id) {
 
   return vacancy.val();
 }
+
 async function create(companyId, data) {
   try {
     await firebase
@@ -26,22 +32,28 @@ async function create(companyId, data) {
       .push({
         ...data,
         companyId,
-        createdTime: firebase.database.ServerValue.TIMESTAMP,
+        createdTime: now(),
+        publishedTime: now(),
       });
   } catch (e) {
     throw e;
   }
 }
+
 async function update(id, data) {
   try {
     await firebase
       .database()
       .ref(`vacancies/${id}`)
-      .update(data);
+      .update({
+        ...data,
+        publishedTime: now(),
+      });
   } catch (e) {
     throw e;
   }
 }
+
 export default {
   getList,
   getItem,
