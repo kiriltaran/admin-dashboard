@@ -1,5 +1,5 @@
 <template>
-  <el-header>
+  <el-header class="header">
     <el-row 
       type="flex" 
       justify="space-between">
@@ -7,7 +7,7 @@
         href="/" 
         class="logo">
         <img 
-          src="https://via.placeholder.com/100x50" 
+          src="@/assets/logo.svg" 
           class="logo-icon">
       </a>
       <div 
@@ -62,12 +62,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-header {
-  background-color: #b3c0d1;
+.header {
+  background-color: #40a0ff49;
   line-height: 60px;
+  border-bottom: 2px solid #409eff;
 }
 
 .logo-icon {
+  width: 90px;
   vertical-align: middle;
 }
 
