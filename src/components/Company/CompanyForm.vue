@@ -137,7 +137,7 @@ export default {
       croppa: {},
       companyForm: { ...COMPANY_DEFAULT },
       phonePlaceholder: '',
-      isValidPhone: false,
+      isValidPhone: true,
       rules: {
         name: [
           {
