@@ -100,11 +100,13 @@ export default {
         if (this.companyId === '') {
           this.loading = true;
           await api.company.create(data);
+          this.$message.success('Компания создана');
           await this.loadCompanies();
           this.companyId = Object.keys(this.companies).pop();
         } else {
           this.loading = true;
           await api.company.update(this.companyId, data);
+          this.$message.success('Компания изменена');
           await this.loadCompanies();
         }
       } catch (e) {
@@ -118,11 +120,13 @@ export default {
         if (this.vacancyId === '') {
           this.loading = true;
           await api.vacancy.create(this.companyId, data);
+          this.$message.success('Вакансия создана');
           await this.loadVacancies();
           this.vacancyId = Object.keys(this.vacancies).pop();
         } else {
           this.loading = true;
           await api.vacancy.update(this.vacancyId, data);
+          this.$message.success('Вакансия изменена');
           await this.loadVacancies();
         }
       } catch (e) {
@@ -138,6 +142,7 @@ export default {
       try {
         this.loading = true;
         await api.vacancy.update(this.vacancyId, { status });
+        this.$message.success('Статус вакансии изменен');
       } catch (e) {
         window.console.log(e);
       } finally {
