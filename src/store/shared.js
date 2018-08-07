@@ -6,40 +6,58 @@ export default {
   state: {
     user: null,
     loading: false,
+    error: null,
   },
   mutations: {
     SET_USER(state, payload) {
-      state.user = payload;
+      state.user = payload ? { ...payload } : null;
     },
     SET_LOADING(state, payload) {
       state.loading = payload;
     },
+    SET_ERROR(state, payload) {
+      state.error = payload ? { ...payload } : null;
+    },
   },
   actions: {
-    // eslint-disable-next-line no-empty-pattern
-    async signin({}, payload) {
-      await api.auth.signin(payload.email, payload.password);
+    async signin({ commit }, payload) {
+      try {
+        await api.auth.signin(payload.email, payload.password);
+      } catch (e) {
+        commit('SET_ERROR', e);
+      }
     },
-    async signout() {
-      await api.auth.signout();
+    async signout({ commit }) {
+      try {
+        await api.auth.signout();
+      } catch (e) {
+        commit('SET_ERROR', e);
+      }
     },
     async setUser({ commit }, payload) {
-      if (payload) {
-        const role = await api.auth.getUserRole(payload.uid);
-        if (role === 'admin') {
-          commit('SET_USER', payload);
-          Raven.setUserContext({
-            id: payload.uid,
-            email: payload.email,
-          });
-          router.push({ path: '/' });
+      try {
+        if (payload) {
+          const role = await api.auth.getUserRole(payload.uid);
+          if (role === 'admin') {
+            commit('SET_USER', payload);
+            Raven.setUserContext({
+              id: payload.uid,
+              email: payload.email,
+            });
+            router.push({ path: '/' });
+          } else {
+            await api.auth.signout();
+          }
         } else {
-          await api.auth.signout();
+          commit('SET_USER', payload);
+          router.push({ path: '/auth' });
         }
-      } else {
-        commit('SET_USER', payload);
-        router.push({ path: '/auth' });
+      } catch (e) {
+        commit('SET_ERROR', e);
       }
+    },
+    setError({ commit }, payload) {
+      commit('SET_ERROR', payload);
     },
   },
   getters: {
@@ -48,6 +66,9 @@ export default {
     },
     LOADING(state) {
       return state.loading;
+    },
+    ERROR(state) {
+      return state.error;
     },
   },
 };

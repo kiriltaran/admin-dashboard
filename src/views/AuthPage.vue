@@ -14,28 +14,23 @@
 </template>
 
 <script>
-import api from '@/api';
 import SigninForm from '@/components/SigninForm.vue';
 
 export default {
   components: {
     SigninForm,
   },
-  data() {
-    return {
-      error: '',
-    };
+  computed: {
+    error() {
+      return this.$store.getters.ERROR;
+    },
   },
   methods: {
-    async onSignin({ email, password }) {
-      try {
-        await api.auth.signin(email, password);
-      } catch (e) {
-        this.error = e;
-      }
+    onSignin({ email, password }) {
+      this.$store.dispatch('signin', { email, password });
     },
     onCloseError() {
-      this.error = '';
+      this.$store.dispatch('setError', null);
     },
   },
 };
