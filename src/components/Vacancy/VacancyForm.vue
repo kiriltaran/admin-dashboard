@@ -39,7 +39,7 @@
     <el-form-item 
       label="Удаленность рейсов от гаража" 
       prop="remoteness">
-      <el-input v-model="vacancyForm.remoteness"/>
+      <vacancy-remoteness-selector v-model="vacancyForm.remoteness"/>
     </el-form-item>
     <el-form-item 
       label="Зарплата" 
@@ -74,6 +74,7 @@ import { VueEditor } from 'vue2-editor';
 import VacancyAddress from '@/components/Address.vue';
 import VacancyCategorySelector from '@/components/Vacancy/VacancyCategorySelector.vue';
 import VacancySpecializationSelector from '@/components/Vacancy/VacancySpecializationSelector.vue';
+import VacancyRemotenessSelector from '@/components/Vacancy/VacancyRemotenessSelector.vue';
 import VacancyStatusSelector from '@/components/Vacancy/VacancyStatusSelector.vue';
 
 const VACANCY_DEFAULT = {
@@ -93,6 +94,7 @@ export default {
     VacancyAddress,
     VacancyCategorySelector,
     VacancySpecializationSelector,
+    VacancyRemotenessSelector,
     VacancyStatusSelector,
   },
   props: {

@@ -5,7 +5,6 @@
     :debounce="500"
     :trigger-on-focus="false"
     prefix-icon="el-icon-location-outline"
-    icon="el-icon-location"
     placeholder="Введите адрес"
     style="display:block"
     @select="handleSelect"
