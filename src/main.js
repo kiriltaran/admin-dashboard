@@ -17,6 +17,7 @@ import 'vue-tel-input/dist/vue-tel-input.css';
 
 import App from './App.vue';
 import router from './router';
+import store from './store'
 
 if (process.env.NODE_ENV === 'production') {
   Raven.config(process.env.VUE_APP_SENTRY_DSN, {
@@ -56,8 +57,11 @@ const config = {
 
 new Vue({
   router,
+
   created() {
     firebase.initializeApp(config);
   },
-  render: h => h(App),
+
+  store,
+  render: h => h(App)
 }).$mount('#app');
