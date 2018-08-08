@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 
 export default {
@@ -20,14 +19,33 @@ export default {
   components: {
     HeaderComponent,
   },
-  created() {
-    this.observeAuth();
+  computed: {
+    error() {
+      return this.$store.getters.ERROR_MESSAGE;
+    },
+    notification() {
+      return this.$store.getters.NOTIFICATION;
+    },
   },
-  methods: {
-    observeAuth() {
-      firebase.auth().onAuthStateChanged(async user => {
-        this.$store.dispatch('setUser', user);
-      });
+  watch: {
+    error(val) {
+      if (val) {
+        this.$message({
+          message: val,
+          type: 'error',
+        });
+      }
+    },
+    notification(val) {
+      if (val) {
+        const vm = this;
+        this.$message({
+          message: val,
+          onClose() {
+            vm.$store.dispatch('setNotification', null);
+          },
+        });
+      }
     },
   },
 };

@@ -1,23 +1,5 @@
 import firebase from 'firebase/app';
 
-async function getList() {
-  const companies = await firebase
-    .database()
-    .ref('companies')
-    .once('value');
-
-  return companies.val();
-}
-
-async function getItem(id) {
-  const company = await firebase
-    .database()
-    .ref(`companies/${id}`)
-    .once('value');
-
-  return company.val();
-}
-
 async function create(data) {
   try {
     await firebase
@@ -61,8 +43,6 @@ function uploadLogo(name, blob) {
 }
 
 export default {
-  getList,
-  getItem,
   create,
   update,
   uploadLogo,

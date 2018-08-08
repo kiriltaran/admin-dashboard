@@ -3,7 +3,7 @@
     <el-card class="auth-panel">
       <el-alert 
         v-if="error" 
-        :title="error.message"
+        :title="error"
         type="error"
         show-icon
         @close="onCloseError" 
@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     error() {
-      return this.$store.getters.ERROR;
+      return this.$store.getters.ERROR_MESSAGE;
     },
   },
   methods: {

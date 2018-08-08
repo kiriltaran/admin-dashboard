@@ -7,6 +7,7 @@ export default {
     user: null,
     loading: false,
     error: null,
+    notification: null,
   },
   mutations: {
     SET_USER(state, payload) {
@@ -17,6 +18,9 @@ export default {
     },
     SET_ERROR(state, payload) {
       state.error = payload ? { ...payload } : null;
+    },
+    SET_NOTIFICATION(state, payload) {
+      state.notification = payload || null;
     },
   },
   actions: {
@@ -46,6 +50,7 @@ export default {
             });
             router.push({ path: '/' });
           } else {
+            commit('SET_ERROR', { message: 'Недостаточно прав' });
             await api.auth.signout();
           }
         } else {
@@ -59,6 +64,9 @@ export default {
     setError({ commit }, payload) {
       commit('SET_ERROR', payload);
     },
+    setNotification({ commit }, payload) {
+      commit('SET_NOTIFICATION', payload);
+    },
   },
   getters: {
     USER(state) {
@@ -67,8 +75,11 @@ export default {
     LOADING(state) {
       return state.loading;
     },
-    ERROR(state) {
-      return state.error;
+    ERROR_MESSAGE(state) {
+      return state.error ? state.error.message : null;
+    },
+    NOTIFICATION(state) {
+      return state.notification;
     },
   },
 };
