@@ -6,6 +6,9 @@ const secureCompare = require('secure-compare');
 const subDays = require('date-fns/sub_days');
 const getTime = require('date-fns/get_time');
 
+const TIME_FIELD = 'publishedTime';
+const UNPUBLISHED_STATUS = 'unpublished';
+
 admin.initializeApp();
 
 function getVacanciesListByDays(days) {
@@ -14,7 +17,7 @@ function getVacanciesListByDays(days) {
   return admin
     .database()
     .ref('vacancies')
-    .orderByChild('createdTime')
+    .orderByChild(TIME_FIELD)
     .endAt(time)
     .once('value');
 }
@@ -34,7 +37,7 @@ exports.unpublish = functions.https.onRequest((req, res) => {
       const promises = Object.keys(vacancies).map(id => admin
         .database()
         .ref('vacancies/' + id)
-        .update({ status: 'unpublished' }));
+        .update({ status: UNPUBLISHED_STATUS }));
 
       Promise.all(promises)
         .then(() => res.send('ok'))
