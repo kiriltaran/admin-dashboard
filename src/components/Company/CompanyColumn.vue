@@ -1,14 +1,12 @@
 <template>
   <div class="company-column">
     <company-form
-      v-if="isShowingForm"
-      :form-data="companyId ? company : null"
+      v-if="isEditing"
       @submit="onSubmit"
       @cancel="onCancel"
     />
-    <template v-if="isShowingInfo">
+    <template v-if="!isEditing">
       <company-info
-        :company="company" 
         class="company-info mb-20" 
         @edit="onEdit"
       />
@@ -31,7 +29,7 @@
             v-for="(vacancy, id) in vacancies"
             :key="id"
             :vacancy="vacancy"
-            :is-active="id===vacancyId"
+            :is-active="id===activeVacancyId"
             class="list-item"
             @click.native="onClickVacancy(id)"
             @change-status="onChangeStatus"/>
@@ -42,7 +40,6 @@
 </template>
 
 <script>
-import api from '@/api';
 import CompanyInfo from '@/components/Company/CompanyInfo.vue';
 import CompanyForm from '@/components/Company/CompanyForm.vue';
 import VacancyTile from '@/components/Vacancy/VacancyTile.vue';
@@ -53,32 +50,27 @@ export default {
     CompanyInfo,
     CompanyForm,
   },
-  props: {
-    companyId: {
-      type: String,
-      default: '',
-    },
-    vacancyId: {
-      type: String,
-      default: '',
-    },
-    vacancies: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
   data() {
     return {
       vacanciesHeight: 0,
-      company: null,
-      isShowingInfo: false,
-      isShowingForm: false,
     };
   },
+  computed: {
+    activeCompanyId() {
+      return this.$store.getters.ACTIVE_COMPANY_ID;
+    },
+    activeVacancyId() {
+      return this.$store.getters.ACTIVE_VACANCY_ID;
+    },
+    vacancies() {
+      return this.$store.getters.VACANCIES;
+    },
+    isEditing() {
+      return this.$store.getters.IS_COMPANY_EDITING;
+    },
+  },
   watch: {
-    companyId: {
+    activeCompanyId: {
       handler(value) {
         if (value === '') {
           this.showForm();
@@ -90,8 +82,15 @@ export default {
     },
   },
   methods: {
+    onSubmit(data) {
+      if (this.activeCompanyId === '') {
+        this.$store.dispatch('createCompany', data);
+      } else {
+        this.$store.dispatch('updateCompany', data);
+      }
+    },
     calculateVacanciesHeight() {
-      if (this.companyId) {
+      if (this.activeCompanyId) {
         const infoHeight =
           document.getElementsByClassName('company-info')[0].clientHeight +
           document.getElementsByClassName('vacancies-header')[0].clientHeight +
@@ -104,38 +103,24 @@ export default {
     onEdit() {
       this.showForm();
     },
-    onSubmit(data) {
-      this.$emit('submit', data);
-      this.showInfo();
-    },
     onCancel() {
       this.showInfo();
     },
-    async loadCompany(companyId) {
-      try {
-        this.company = await api.company.getItem(companyId);
-      } catch (e) {
-        window.console.log(e);
-      }
-    },
-    async showInfo() {
-      await this.loadCompany(this.companyId);
-      this.isShowingInfo = true;
-      this.isShowingForm = false;
+    showInfo() {
+      this.$store.dispatch('setIsCompanyEditing', false);
       this.$nextTick(() => this.calculateVacanciesHeight());
     },
     showForm() {
-      this.isShowingInfo = false;
-      this.isShowingForm = true;
+      this.$store.dispatch('setIsCompanyEditing', true);
     },
     onClickNewVacancy() {
-      this.$emit('click-new');
+      this.$store.dispatch('setActiveVacancyId', '');
     },
     onClickVacancy(id) {
-      this.$emit('select-vacancy', id);
+      this.$store.dispatch('setActiveVacancyId', id);
     },
     onChangeStatus(status) {
-      this.$emit('change-status', status);
+      this.$store.dispatch('updateVacancy', { status });
     },
   },
 };

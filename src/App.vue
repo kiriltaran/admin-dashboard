@@ -1,20 +1,17 @@
 <template>
   <div id="app" >
-    <header-component :user="user"/>
+    <header-component/>
     <el-main class="main">
       <transition 
         name="el-fade-in-linear" 
         mode="out-in">
-        <router-view :user="user"/>
+        <router-view/>
       </transition>
     </el-main>
   </div>
 </template>
 
 <script>
-import api from '@/api';
-import Raven from 'raven-js';
-import firebase from 'firebase/app';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 
 export default {
@@ -22,34 +19,33 @@ export default {
   components: {
     HeaderComponent,
   },
-  data() {
-    return {
-      user: null,
-    };
+  computed: {
+    error() {
+      return this.$store.getters.ERROR_MESSAGE;
+    },
+    notification() {
+      return this.$store.getters.NOTIFICATION;
+    },
   },
-  created() {
-    this.observeAuth();
-  },
-  methods: {
-    observeAuth() {
-      firebase.auth().onAuthStateChanged(async user => {
-        if (user) {
-          const role = await api.auth.getUserRole(user.uid);
-          if (role === 'admin') {
-            this.user = user;
-            Raven.setUserContext({
-              id: user.uid,
-              email: user.email,
-            });
-            this.$router.push({ path: '/' });
-          } else {
-            await api.auth.signout();
-          }
-        } else {
-          this.user = null;
-          this.$router.push({ path: '/auth' });
-        }
-      });
+  watch: {
+    error(val) {
+      if (val) {
+        this.$message({
+          message: val,
+          type: 'error',
+        });
+      }
+    },
+    notification(val) {
+      if (val) {
+        const vm = this;
+        this.$message({
+          message: val,
+          onClose() {
+            vm.$store.dispatch('setNotification', null);
+          },
+        });
+      }
     },
   },
 };

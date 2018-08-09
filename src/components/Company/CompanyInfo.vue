@@ -56,18 +56,15 @@
 
 <script>
 export default {
-  props: {
-    company: {
-      type: Object,
-      default() {
-        return null;
-      },
-    },
-  },
   data() {
     return {
       isFullDesc: false,
     };
+  },
+  computed: {
+    company() {
+      return this.$store.getters.ACTIVE_COMPANY;
+    },
   },
   methods: {
     onClickEdit() {

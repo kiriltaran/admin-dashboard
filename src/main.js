@@ -17,6 +17,7 @@ import 'vue-tel-input/dist/vue-tel-input.css';
 
 import App from './App.vue';
 import router from './router';
+import store from './store';
 
 if (process.env.NODE_ENV === 'production') {
   Raven.config(process.env.VUE_APP_SENTRY_DSN, {
@@ -55,9 +56,33 @@ const config = {
 };
 
 new Vue({
-  router,
   created() {
     firebase.initializeApp(config);
+    this.observeUser();
+    this.observeCompanies();
   },
+  methods: {
+    observeUser() {
+      firebase.auth().onAuthStateChanged(async user => {
+        this.$store.dispatch('setUser', user);
+      });
+    },
+    observeCompanies() {
+      firebase
+        .database()
+        .ref('companies')
+        .on(
+          'value',
+          snapshot => {
+            this.$store.dispatch('setCompanies', snapshot.val());
+          },
+          e => {
+            this.$store.dispatch('setError', e);
+          },
+        );
+    },
+  },
+  router,
+  store,
   render: h => h(App),
 }).$mount('#app');

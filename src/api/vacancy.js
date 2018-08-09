@@ -15,15 +15,6 @@ async function getList(companyId) {
   return vacancies.val();
 }
 
-async function getItem(id) {
-  const vacancy = await firebase
-    .database()
-    .ref(`vacancies/${id}`)
-    .once('value');
-
-  return vacancy.val();
-}
-
 async function create(companyId, data) {
   try {
     await firebase
@@ -56,7 +47,6 @@ async function update(id, data) {
 
 export default {
   getList,
-  getItem,
   create,
   update,
 };

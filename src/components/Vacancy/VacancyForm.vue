@@ -61,7 +61,7 @@
       Сохранить
     </el-button>
     <el-button
-      v-if="formData"
+      v-if="activeVacancy"
       class="cancel-btn" 
       @click="onCancel">
       Отмена
@@ -96,14 +96,6 @@ export default {
     VacancySpecializationSelector,
     VacancyRemotenessSelector,
     VacancyStatusSelector,
-  },
-  props: {
-    formData: {
-      type: Object,
-      default() {
-        return null;
-      },
-    },
   },
   data() {
     return {
@@ -142,8 +134,13 @@ export default {
       },
     };
   },
+  computed: {
+    activeVacancy() {
+      return this.$store.getters.ACTIVE_VACANCY;
+    },
+  },
   watch: {
-    formData: {
+    activeVacancy: {
       handler() {
         this.initForm();
       },
@@ -166,7 +163,9 @@ export default {
       this.$emit('cancel');
     },
     initForm() {
-      this.vacancyForm = this.formData ? { ...this.formData } : VACANCY_DEFAULT;
+      this.vacancyForm = this.activeVacancy
+        ? { ...this.activeVacancy }
+        : VACANCY_DEFAULT;
     },
   },
 };

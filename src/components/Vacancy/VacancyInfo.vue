@@ -43,12 +43,9 @@ export default {
   filters: {
     vacancyTime: value => getVacancyTime(value),
   },
-  props: {
-    vacancy: {
-      type: Object,
-      default() {
-        return null;
-      },
+  computed: {
+    vacancy() {
+      return this.$store.getters.ACTIVE_VACANCY;
     },
   },
   methods: {
