@@ -14,15 +14,19 @@ async function getList(companyId) {
 
 async function create(companyId, data) {
   try {
+    const publishedTime = await vacancyHelpers.getPublishedTime(null, data);
+    const topTime = await vacancyHelpers.getTopTime(null, data);
+    const createdTime = vacancyHelpers.now();
+
     await firebase
       .database()
       .ref('vacancies')
       .push({
         ...data,
         companyId,
-        createdTime: vacancyHelpers.now(),
-        publishedTime: vacancyHelpers.getPublishedTime(null, data),
-        topTime: vacancyHelpers.getTopTime(null, data),
+        createdTime,
+        publishedTime,
+        topTime,
       });
   } catch (e) {
     throw e;
@@ -31,13 +35,16 @@ async function create(companyId, data) {
 
 async function update(id, data) {
   try {
+    const publishedTime = await vacancyHelpers.getPublishedTime(id, data);
+    const topTime = await vacancyHelpers.getTopTime(id, data);
+
     await firebase
       .database()
       .ref(`vacancies/${id}`)
       .update({
         ...data,
-        publishedTime: vacancyHelpers.getPublishedTime(id, data),
-        topTime: vacancyHelpers.getTopTime(id, data),
+        publishedTime,
+        topTime,
       });
   } catch (e) {
     throw e;
