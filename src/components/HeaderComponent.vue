@@ -31,12 +31,9 @@
 import api from '@/api';
 
 export default {
-  props: {
-    user: {
-      type: Object,
-      default() {
-        return null;
-      },
+  computed: {
+    user() {
+      return this.$store.getters.USER;
     },
   },
   methods: {

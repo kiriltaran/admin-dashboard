@@ -89,7 +89,7 @@
       Сохранить
     </el-button>
     <el-button
-      v-if="formData"
+      v-if="activeCompany"
       class="cancel-btn" 
       @click="onCancel">
       Отмена
@@ -105,7 +105,9 @@ import { VueEditor } from 'vue2-editor';
 const COMPANY_DEFAULT = {
   name: '',
   tin: '',
-  address: {},
+  address: {
+    address: '',
+  },
   phone: '',
   website: '',
   logo: '',
@@ -116,14 +118,6 @@ export default {
   components: {
     CompanyAddress,
     VueEditor,
-  },
-  props: {
-    formData: {
-      type: Object,
-      default() {
-        return null;
-      },
-    },
   },
   data() {
     const validatePhone = (rule, value, callback) => {
@@ -170,9 +164,12 @@ export default {
     isShowingCroppa() {
       return !this.companyForm.logo;
     },
+    activeCompany() {
+      return this.$store.getters.ACTIVE_COMPANY;
+    },
   },
   watch: {
-    formData: {
+    activeCompany: {
       handler() {
         this.initForm();
       },
@@ -207,7 +204,9 @@ export default {
       this.$emit('cancel');
     },
     initForm() {
-      this.companyForm = this.formData ? { ...this.formData } : COMPANY_DEFAULT;
+      this.companyForm = this.activeCompany
+        ? { ...this.activeCompany }
+        : COMPANY_DEFAULT;
     },
     onClickRemoveLogo() {
       this.companyForm.logo = '';

@@ -59,7 +59,6 @@ export default {
       this.$refs.signinForm.validate(valid => {
         if (valid) {
           this.$emit('signin', this.signinForm);
-          this.$refs.signinForm.resetFields();
         }
       });
     },

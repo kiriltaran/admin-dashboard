@@ -13,7 +13,7 @@
     },
     "vacancies": {
       ".read": true,
-      ".indexOn": ["companyId", "status", "category", "publishedTime"]
+      ".indexOn": ["companyId", "status", "category", "publishedTime", "topTime"]
     }
   }
 }

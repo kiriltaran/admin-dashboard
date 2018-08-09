@@ -25,7 +25,9 @@
           </div>
           <div class="options-item">+{{ vacancy.remoteness }} км</div>
         </div>
-        <div class="time label"><i class="el-icon-time"/> {{ vacancy.createdTime | vacancyTime }}д</div>
+        <div 
+          v-if="vacancy.publishedTime" 
+          class="time label"><i class="el-icon-time"/> {{ vacancy.publishedTime | vacancyTime }}д</div>
       </div>
       <div class="salary mb-10">{{ vacancy.salary }}</div>
       <div class="title">{{ vacancy.title }}</div>
@@ -43,12 +45,9 @@ export default {
   filters: {
     vacancyTime: value => getVacancyTime(value),
   },
-  props: {
-    vacancy: {
-      type: Object,
-      default() {
-        return null;
-      },
+  computed: {
+    vacancy() {
+      return this.$store.getters.ACTIVE_VACANCY;
     },
   },
   methods: {

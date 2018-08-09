@@ -1,14 +1,12 @@
 <template>
   <div class="vacancy-column">
     <vacancy-form 
-      v-if="isShowingForm"
-      :form-data="vacancyId ? vacancy : null"
+      v-if="isEditing"
       @submit="onSubmit"
       @cancel="onCancel"
     />
     <vacancy-info 
-      v-if="isShowingInfo" 
-      :vacancy="vacancy"
+      v-if="!isEditing" 
       @edit="onEdit"
     />
   </div>
@@ -16,7 +14,6 @@
 
 
 <script>
-import api from '@/api';
 import VacancyForm from '@/components/Vacancy/VacancyForm.vue';
 import VacancyInfo from '@/components/Vacancy/VacancyInfo.vue';
 
@@ -25,26 +22,16 @@ export default {
     VacancyForm,
     VacancyInfo,
   },
-  props: {
-    vacancyId: {
-      type: String,
-      default: '',
+  computed: {
+    activeVacancyId() {
+      return this.$store.getters.ACTIVE_VACANCY_ID;
     },
-    companyId: {
-      type: String,
-      default: '',
+    isEditing() {
+      return this.$store.getters.IS_VACANCY_EDITING;
     },
-  },
-
-  data() {
-    return {
-      vacancy: null,
-      isShowingInfo: false,
-      isShowingForm: false,
-    };
   },
   watch: {
-    vacancyId: {
+    activeVacancyId: {
       handler(value) {
         if (value === '') {
           this.showForm();
@@ -56,28 +43,21 @@ export default {
     },
   },
   methods: {
-    async loadVacancy(vacancyId) {
-      try {
-        this.vacancy = await api.vacancy.getItem(vacancyId);
-      } catch (e) {
-        window.console.log(e);
-      }
-    },
-    async showInfo() {
-      await this.loadVacancy(this.vacancyId);
-      this.isShowingInfo = true;
-      this.isShowingForm = false;
+    showInfo() {
+      this.$store.dispatch('setIsVacancyEditing', false);
     },
     showForm() {
-      this.isShowingInfo = false;
-      this.isShowingForm = true;
+      this.$store.dispatch('setIsVacancyEditing', true);
     },
     onEdit() {
       this.showForm();
     },
     onSubmit(data) {
-      this.$emit('submit', data);
-      this.showInfo();
+      if (this.activeVacancyId === '') {
+        this.$store.dispatch('createVacancy', data);
+      } else {
+        this.$store.dispatch('updateVacancy', data);
+      }
     },
     onCancel() {
       this.showInfo();

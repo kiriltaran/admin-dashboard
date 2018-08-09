@@ -3,35 +3,19 @@
     v-loading="loading" 
     class="dashboard">
     <div class="col-1 col">
-      <companies-list 
-        :company-id="companyId"
-        :companies="companies"
-        @click-new="onClickNewCompany" 
-        @select-company="onSelectCompany"/>
+      <companies-list/>
     </div>
     <div class="col-2 col">
       <company-column 
-        v-if="isShowingCompanyColumn" 
-        :company-id="companyId"
-        :vacancy-id="vacancyId"
-        :vacancies="vacancies"
-        @click-new="onClickNewVacancy"
-        @submit="onSubmitCompany"
-        @select-vacancy="onSelectVacancy"
-        @change-status="onChangeStatus" />
+        v-if="isShowingCompanyColumn"/>
     </div>
     <div class="col-3 col">
-      <vacancy-column
-        v-if="isShowingVacancyColumn" 
-        :company-id="companyId"
-        :vacancy-id="vacancyId"
-        @submit="onSubmitVacancy"/>
+      <vacancy-column v-if="isShowingVacancyColumn"/>
     </div>   
   </div>
 </template>
 
 <script>
-import api from '@/api';
 import CompaniesList from '@/components/Company/CompaniesList.vue';
 import CompanyColumn from '@/components/Company/CompanyColumn.vue';
 import VacancyColumn from '@/components/Vacancy/VacancyColumn.vue';
@@ -42,112 +26,21 @@ export default {
     CompanyColumn,
     VacancyColumn,
   },
-  data() {
-    return {
-      loading: false,
-      companies: {},
-      vacancies: {},
-      companyId: null,
-      vacancyId: null,
-    };
-  },
   computed: {
+    loading() {
+      return this.$store.getters.LOADING;
+    },
+    activeCompanyId() {
+      return this.$store.getters.ACTIVE_COMPANY_ID;
+    },
+    activeVacancyId() {
+      return this.$store.getters.ACTIVE_VACANCY_ID;
+    },
     isShowingCompanyColumn() {
-      return this.companyId !== null;
+      return this.activeCompanyId !== null;
     },
     isShowingVacancyColumn() {
-      return this.vacancyId !== null;
-    },
-  },
-  mounted() {
-    this.loadCompanies();
-  },
-  methods: {
-    async loadCompanies() {
-      try {
-        this.loading = true;
-        this.companies = await api.company.getList();
-      } catch (e) {
-        window.console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async loadVacancies() {
-      try {
-        this.loading = true;
-        this.vacancies = await api.vacancy.getList(this.companyId);
-      } catch (e) {
-        window.console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    onClickNewCompany() {
-      this.companyId = '';
-      this.vacancyId = null;
-    },
-    onClickNewVacancy() {
-      this.vacancyId = '';
-    },
-    async onSelectCompany(companyId) {
-      this.companyId = companyId;
-      this.vacancyId = null;
-      await this.loadVacancies(companyId);
-    },
-    async onSubmitCompany(data) {
-      try {
-        if (this.companyId === '') {
-          this.loading = true;
-          await api.company.create(data);
-          this.$message.success('Компания создана');
-          await this.loadCompanies();
-          this.companyId = Object.keys(this.companies).pop();
-        } else {
-          this.loading = true;
-          await api.company.update(this.companyId, data);
-          this.$message.success('Компания изменена');
-          await this.loadCompanies();
-        }
-      } catch (e) {
-        window.console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async onSubmitVacancy(data) {
-      try {
-        if (this.vacancyId === '') {
-          this.loading = true;
-          await api.vacancy.create(this.companyId, data);
-          this.$message.success('Вакансия создана');
-          await this.loadVacancies();
-          this.vacancyId = Object.keys(this.vacancies).pop();
-        } else {
-          this.loading = true;
-          await api.vacancy.update(this.vacancyId, data);
-          this.$message.success('Вакансия изменена');
-          await this.loadVacancies();
-        }
-      } catch (e) {
-        window.console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    onSelectVacancy(id) {
-      this.vacancyId = id;
-    },
-    async onChangeStatus(status) {
-      try {
-        this.loading = true;
-        await api.vacancy.update(this.vacancyId, { status });
-        this.$message.success('Статус вакансии изменен');
-      } catch (e) {
-        window.console.log(e);
-      } finally {
-        this.loading = false;
-      }
+      return this.activeVacancyId !== null;
     },
   },
 };

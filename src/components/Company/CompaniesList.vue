@@ -21,7 +21,7 @@
       <li 
         v-for="company in companiesList" 
         :key="company.id"
-        :class="companyId === company.id ? 'active' : ''"
+        :class="activeCompanyId === company.id ? 'active' : ''"
         class="list-item"
         @click="onClickCompany(company.id)">
         {{ company.name }}
@@ -34,18 +34,6 @@
 import sortBy from 'lodash.sortby';
 
 export default {
-  props: {
-    companies: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    companyId: {
-      type: String,
-      default: '',
-    },
-  },
   data() {
     return {
       search: '',
@@ -67,12 +55,18 @@ export default {
       });
       return sortBy(result, 'name');
     },
+    companies() {
+      return this.$store.getters.COMPANIES;
+    },
+    activeCompanyId() {
+      return this.$store.getters.ACTIVE_COMPANY_ID;
+    },
   },
   mounted() {
-    this.initListHeight();
+    this.calculateListHeight();
   },
   methods: {
-    initListHeight() {
+    calculateListHeight() {
       const headHeight = document.getElementsByClassName('companies-head')[0]
         .clientHeight;
       const mainHeight =
@@ -80,10 +74,13 @@ export default {
       this.listHeight = mainHeight - headHeight;
     },
     onClickNew() {
-      this.$emit('click-new');
+      this.$store.dispatch('setActiveCompanyId', '');
+      this.$store.dispatch('setActiveVacancyId', null);
     },
     onClickCompany(id) {
-      this.$emit('select-company', id);
+      this.$store.dispatch('setActiveCompanyId', id);
+      this.$store.dispatch('setActiveVacancyId', null);
+      this.$store.dispatch('loadVacancies', id);
     },
   },
 };
