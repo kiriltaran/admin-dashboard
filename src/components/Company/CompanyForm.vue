@@ -267,4 +267,16 @@ export default {
 .success {
   border-color: #67c23a !important;
 }
+
+/* For Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Webkit browsers like Safari and Chrome */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>
