@@ -20,7 +20,9 @@
         </div>
         <div class="options-item">+{{ vacancy.remoteness }} км</div>
       </div>
-      <div class="time label"><i class="el-icon-time"/> {{ vacancy.createdTime | vacancyTime }}д</div>
+      <div 
+        v-if="vacancy.publishedTime" 
+        class="time label"><i class="el-icon-time"/> {{ vacancy.publishedTime | vacancyTime }}д</div>
     </div>
     <div class="salary mb-10">{{ vacancy.salary }}</div>
     <div class="title mb-10">{{ vacancy.title }}</div>

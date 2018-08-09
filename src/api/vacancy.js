@@ -1,8 +1,5 @@
 import firebase from 'firebase/app';
-
-function now() {
-  return firebase.database.ServerValue.TIMESTAMP;
-}
+import { vacancyHelpers } from '@/api/helpers';
 
 async function getList(companyId) {
   const vacancies = await firebase
@@ -17,14 +14,19 @@ async function getList(companyId) {
 
 async function create(companyId, data) {
   try {
+    const publishedTime = await vacancyHelpers.getPublishedTime(null, data);
+    const topTime = await vacancyHelpers.getTopTime(null, data);
+    const createdTime = vacancyHelpers.now();
+
     await firebase
       .database()
       .ref('vacancies')
       .push({
         ...data,
         companyId,
-        createdTime: now(),
-        publishedTime: now(),
+        createdTime,
+        publishedTime,
+        topTime,
       });
   } catch (e) {
     throw e;
@@ -33,12 +35,16 @@ async function create(companyId, data) {
 
 async function update(id, data) {
   try {
+    const publishedTime = await vacancyHelpers.getPublishedTime(id, data);
+    const topTime = await vacancyHelpers.getTopTime(id, data);
+
     await firebase
       .database()
       .ref(`vacancies/${id}`)
       .update({
         ...data,
-        publishedTime: now(),
+        publishedTime,
+        topTime,
       });
   } catch (e) {
     throw e;

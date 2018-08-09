@@ -105,7 +105,9 @@ import { VueEditor } from 'vue2-editor';
 const COMPANY_DEFAULT = {
   name: '',
   tin: '',
-  address: {},
+  address: {
+    address: '',
+  },
   phone: '',
   website: '',
   logo: '',
