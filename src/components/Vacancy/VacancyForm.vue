@@ -81,7 +81,9 @@ const VACANCY_DEFAULT = {
   title: '',
   category: '',
   specialization: [],
-  location: {},
+  location: {
+    address: '',
+  },
   remoteness: '',
   salary: '',
   description: '',
