@@ -192,7 +192,7 @@ export default {
         if (valid) {
           try {
             await this.uploadLogo();
-            this.$emit('submit', this.companyForm);
+            this.$emit('submit', { ...this.companyForm });
             this.$refs.companyForm.resetFields();
           } catch (e) {
             window.console.log(e);

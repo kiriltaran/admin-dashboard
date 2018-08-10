@@ -154,7 +154,7 @@ export default {
     onSubmit() {
       this.$refs.vacancyForm.validate(valid => {
         if (valid) {
-          this.$emit('submit', this.vacancyForm);
+          this.$emit('submit', { ...this.vacancyForm });
           this.$refs.vacancyForm.resetFields();
         }
       });
