@@ -28,7 +28,7 @@
     </el-row>
     <el-form-item 
       label="Расположение гаража" 
-      prop="location"
+      prop="location.address"
     >
       <vacancy-address
         v-model="vacancyForm.location"
@@ -115,7 +115,7 @@ export default {
             message: 'Обязательное поле для заполнения',
           },
         ],
-        location: [
+        'location.address': [
           {
             required: true,
             message: 'Обязательное поле для заполнения',
