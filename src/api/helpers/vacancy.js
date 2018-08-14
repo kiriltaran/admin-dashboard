@@ -23,31 +23,36 @@ function isTop(vacancy) {
 
 async function getPublishedTime(vacancyId, vacancy) {
   let result = null;
-  let oldVacancy = null;
-  if (vacancyId) {
-    oldVacancy = await getVacancy(vacancyId);
+  if (!vacancy || !vacancyId) {
+    return result;
   }
+
+  const oldVacancy = await getVacancy(vacancyId);
   if (isPublished(vacancy)) {
     result = now();
     if (oldVacancy && isPublished(oldVacancy)) {
       result = oldVacancy.publishedTime;
     }
   }
+
   return result;
 }
 
 async function getTopTime(vacancyId, vacancy) {
   let result = null;
-  let oldVacancy = null;
-  if (vacancyId) {
-    oldVacancy = await getVacancy(vacancyId);
+
+  if (!vacancy || !vacancyId) {
+    return result;
   }
+
+  const oldVacancy = await getVacancy(vacancyId);
   if (isTop(vacancy)) {
     result = now();
     if (isTop(oldVacancy)) {
       result = oldVacancy.publishedTime;
     }
   }
+
   return result;
 }
 
