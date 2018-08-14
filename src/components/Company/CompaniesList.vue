@@ -113,6 +113,7 @@ export default {
   padding: 0 20px;
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
     background-color: #eee;
