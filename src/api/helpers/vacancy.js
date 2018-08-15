@@ -23,8 +23,9 @@ function isTop(vacancy) {
 
 async function getPublishedTime(vacancyId, vacancy) {
   let result = null;
-  if (!vacancy || !vacancyId) {
-    return result;
+
+  if (!vacancy && vacancy && isPublished(vacancy)) {
+    return now();
   }
 
   const oldVacancy = await getVacancy(vacancyId);
