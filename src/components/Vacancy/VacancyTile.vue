@@ -18,7 +18,7 @@
         >
           {{ vacancy.location.address }},
         </div>
-        <div class="options-item">+{{ vacancy.remoteness }} км</div>
+        <div class="options-item">+{{ vacancy.remoteness }}</div>
       </div>
       <div 
         v-if="vacancy.publishedTime" 
