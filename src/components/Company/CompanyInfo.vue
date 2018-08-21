@@ -80,6 +80,10 @@ export default {
 <style lang="scss" scoped>
 .company-info {
   position: relative;
+  .info {
+    overflow: hidden;
+    overflow-wrap: break-word;
+  }
 }
 
 .edit-btn {
