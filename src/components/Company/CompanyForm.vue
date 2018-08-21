@@ -47,6 +47,10 @@
         v-model="croppa"
         :width="150"
         :height="150"
+        :initial-size="'contain'"
+        :canvas-color="'#fff'"
+        :placeholder="'Загрузить логотип'"
+        :placeholder-font-size="15"
         remove-button-color="#409eff"
         class="croppa"
       />
