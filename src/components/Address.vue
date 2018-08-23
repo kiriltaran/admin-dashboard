@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import GoogleMapsApiLoader from 'google-maps-api-loader';
+
 export default {
   name: 'Address',
   props: {
@@ -24,9 +26,15 @@ export default {
       default: false,
     },
   },
-  beforeCreate() {
-    if (window.google) {
-      this.geocoder = new window.google.maps.Geocoder();
+  async mounted() {
+    try {
+      const googleApi = await GoogleMapsApiLoader({
+        apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
+        language: 'ru',
+      });
+      this.geocoder = new googleApi.maps.Geocoder();
+    } catch (err) {
+      this.$message.error('Не получается загрузить Google API');
     }
   },
   methods: {
