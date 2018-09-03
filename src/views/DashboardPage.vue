@@ -64,8 +64,8 @@ export default {
 }
 
 .col-1 {
-  min-width: 250px;
-  max-width: 300px;
+  min-width: 450px;
+  max-width: 500px;
 }
 
 .col-2 {
